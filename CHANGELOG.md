@@ -2,6 +2,16 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-11-12] Decisiones de producto
+
+### Decidido
+- Nombre del club: **Almonte Doñana** (en el diseño de Figma, "Club Azul" es provisional).
+- Categorías: las oficiales de voleibol en Andalucía, gestionadas desde base de datos por temporada.
+- Diseño base: el de Figma (versiones escritorio y móvil). Fotos provisionales hasta tener las reales.
+
+### Pospuesto a la v2
+- Noticias, galería (fotos/vídeos) y clasificación, aunque aparecen en el diseño de Figma.
+
 ## [2026-11-12] agente-codigo
 
 ### Decisiones de arquitectura
