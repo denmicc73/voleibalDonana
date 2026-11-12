@@ -2,8 +2,21 @@
 Leer siempre
 
 ## Qué es
-Una pagina web para mi club de volleyball.Es un club de almonte,en la pagina quiero poder poner los marcadores y que las personas se puedan apuntar segun sus 
-categorias.Aparte de patrocinar el club.
+Web pública (para producción) del club de voleibol **Almonte Doñana**, de Almonte (Huelva). Club **femenino y masculino**.
+Objetivos de la v1:
+- **Marcadores**: resultados set a set y calendario de partidos, actualizados por el club desde un panel de administración.
+- **Inscripciones**: la gente se apunta según su categoría.
+- **Patrocinio**: escaparate de patrocinadores y formulario para empresas que quieran patrocinar.
+
+## Decisiones de producto
+- **Categorías**: las oficiales de voleibol en Andalucía (FAV), guardadas en BD por temporada (el admin las ajusta cada año).
+- **Inscripción = solicitud corta** (como en el diseño): nombre de madre/padre/tutor o de la persona, email, año de nacimiento, categoría de interés y aceptación de privacidad. El club contacta después y completa los datos en persona. Motivo: minimizar datos de menores (RGPD). Nada de datos de salud en la web.
+- **Diseño**: Figma, fileKey `k9Z3RmFeCKsRn1GRyHbHxZ`, frames "Inicio · Escritorio" (4:186) e "Inicio · Móvil" (4:196). Azul marino + amarillo, titulares en cursiva y cortes diagonales.
+  - En el diseño, "Club Azul / Deportivo Femenino" es provisional: usar **Almonte Doñana**.
+  - Los textos del diseño están en femenino ("juntas", "nosotras"). Como el club es mixto, usar redacción **inclusiva/neutra**.
+- **Fotos**: provisionales hasta tener las reales. Los logos (escudo y patrocinadores) los aporta el usuario.
+- **v2 (pospuesto)**: noticias, galería de fotos/vídeos, clasificación, marcador en tiempo real, pagos online y área de socios.
+- **Hosting**: sin decidir (recomendado Railway). Repositorio en GitHub (pendiente de remoto).
 
 ## Stack
 - Lenguaje: Java 25 (LTS), Maven 3.9 con wrapper
@@ -24,7 +37,8 @@ categorias.Aparte de patrocinar el club.
 
 ## Reglas importantes
 - No subir claves ni archivos .env al repositorio.
-- Todo cambio se registra en CHANGELOG.md.
+- Todo cambio se registra en CHANGELOG.md, y en cada iteración se hacen commits con buenos mensajes y **push**.
+- Avanzar por fases y pedir permiso al usuario antes de empezar cada una.
 - Credenciales solo por variables de entorno (.env.example sin valores).
 - CSRF siempre activo.
 - Datos de menores con consentimiento del tutor y acceso solo ADMIN.

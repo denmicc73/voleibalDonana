@@ -8,6 +8,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Nombre del club: **Almonte Doñana** (en el diseño de Figma, "Club Azul" es provisional).
 - Categorías: las oficiales de voleibol en Andalucía, gestionadas desde base de datos por temporada.
 - Diseño base: el de Figma (versiones escritorio y móvil). Fotos provisionales hasta tener las reales.
+- El club es **femenino y masculino**: los textos de la web se redactan de forma inclusiva (el diseño estaba en femenino).
+- Inscripción como **solicitud corta** (tutor/persona, email, año de nacimiento, categoría y privacidad) para minimizar datos de menores; el club completa el resto en persona.
+
+### Cambiado
+- `CLAUDE.md`: rellenado el contexto del proyecto ("Qué es", decisiones de producto, alcance de la v1 y la v2, referencia al Figma) y añadidas las reglas de commit + push por iteración y de avanzar por fases.
 
 ### Pospuesto a la v2
 - Noticias, galería (fotos/vídeos) y clasificación, aunque aparecen en el diseño de Figma.
