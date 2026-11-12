@@ -28,12 +28,10 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
+		<!-- H2 solo para tests; el perfil Maven "dev" lo sube a runtime -->
+		<h2.scope>test</h2.scope>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-h2console</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -76,7 +74,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>${h2.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -123,5 +121,23 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- Desarrollo local: mvnw.cmd spring-boot:run -Pdev -Dspring-boot.run.profiles=dev
+		     No esta activo por defecto, así el jar de producción no incluye H2 ni su consola. -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<h2.scope>runtime</h2.scope>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-h2console</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 </project>
