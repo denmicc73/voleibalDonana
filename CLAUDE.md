@@ -16,7 +16,7 @@ Objetivos de la v1:
   - Los textos del diseño están en femenino ("juntas", "nosotras"). Como el club es mixto, usar redacción **inclusiva/neutra**.
 - **Fotos**: provisionales hasta tener las reales. Los logos (escudo y patrocinadores) los aporta el usuario.
 - **v2 (pospuesto)**: noticias, galería de fotos/vídeos, clasificación, marcador en tiempo real, pagos online y área de socios.
-- **Hosting**: sin decidir (recomendado Railway). Repositorio en GitHub (pendiente de remoto).
+- **Hosting**: sin decidir (recomendado Railway). Repositorio: https://github.com/denmicc73/voleibalDonana (rama main).
 
 ## Stack
 - Lenguaje: Java 25 (LTS), Maven 3.9 con wrapper

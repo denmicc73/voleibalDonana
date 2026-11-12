@@ -12,6 +12,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Inscripción como **solicitud corta** (tutor/persona, email, año de nacimiento, categoría y privacidad) para minimizar datos de menores; el club completa el resto en persona.
 
 ### Cambiado
+- Conectado el repositorio remoto de GitHub (`denmicc73/voleibalDonana`) y subida la rama `main`.
 - `CLAUDE.md`: rellenado el contexto del proyecto ("Qué es", decisiones de producto, alcance de la v1 y la v2, referencia al Figma) y añadidas las reglas de commit + push por iteración y de avanzar por fases.
 
 ### Pospuesto a la v2
