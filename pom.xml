@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
+		<!-- El BOM de Boot 4.1.2 trae mysql-connector-j 9.7.0 con CVEs (CVE-2026-60586, -60623, -60624, -61082) -->
+		<mysql.version>26.10.0</mysql.version>
 		<!-- H2 solo para tests; el perfil Maven "dev" lo sube a runtime -->
 		<h2.scope>test</h2.scope>
 	</properties>
@@ -60,10 +62,8 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
-		</dependency>
+		<!-- thymeleaf-extras-springsecurity6 no es compatible con Security 7 y no existe la versión 7:
+		     se resolverá en la Fase 2 (login y roles) -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

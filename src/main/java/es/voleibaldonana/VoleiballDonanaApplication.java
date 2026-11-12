@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VoleiballDonanaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VoleiballDonanaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(VoleiballDonanaApplication.class, args);
+    }
 
 }
