@@ -1,0 +1,22 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Secretos
+.env
+*.env.local
+
+# IntelliJ
+*.iml
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# Subidas y logs
+uploads/
+logs/
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
