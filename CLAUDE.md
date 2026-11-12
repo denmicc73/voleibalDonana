@@ -26,7 +26,7 @@ Objetivos de la v1:
 
 ## Comandos
 - Instalar dependencias: mvnw.cmd clean install -DskipTests
-- Ejecutar en local: mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+- Ejecutar en local: mvnw.cmd spring-boot:run -Pdev -Dspring-boot.run.profiles=dev (sin perfil de Spring la app no arranca)
 - Ejecutar tests: mvnw.cmd test
 - Linter / formato: formato IntelliJ (4 espacios); mvnw.cmd verify antes de commit
 

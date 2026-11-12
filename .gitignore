@@ -5,6 +5,8 @@ target/
 # Secretos
 .env
 *.env.local
+.env.*
+!.env.example
 
 # IntelliJ
 *.iml
