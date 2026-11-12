@@ -37,7 +37,7 @@ Objetivos de la v1:
 
 ## Reglas importantes
 - No subir claves ni archivos .env al repositorio.
-- Todo cambio se registra en CHANGELOG.md, y en cada iteración se hacen commits con buenos mensajes y **push**.
+- Todo cambio se registra en CHANGELOG.md (archivo solo local, está en .gitignore y no se sube), y en cada iteración se hacen commits con buenos mensajes y **push**.
 - Avanzar por fases y pedir permiso al usuario antes de empezar cada una.
 - Credenciales solo por variables de entorno (.env.example sin valores).
 - CSRF siempre activo.
