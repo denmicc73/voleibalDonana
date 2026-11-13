@@ -1,0 +1,27 @@
+/* Solo se carga sin JavaScript (desde <noscript> en el head):
+   el menú queda siempre visible y el botón hamburguesa se oculta. */
+.boton-menu {
+    display: none;
+}
+
+.menu {
+    display: block;
+    position: static;
+    padding-inline: 0;
+    box-shadow: none;
+}
+
+@media (min-width: 1024px) {
+    .menu {
+        display: flex;
+    }
+
+    .cabecera__barra {
+        flex-wrap: wrap;
+    }
+}
+
+/* Las pestañas del calendario necesitan JS: sin él se ven todas las listas seguidas. */
+.pestanas {
+    display: none;
+}

@@ -1,0 +1,1523 @@
+/* ==========================================================================
+   Almonte Doñana · Club de Voleibol — hoja de estilos principal
+   Diseño: Figma k9Z3RmFeCKsRn1GRyHbHxZ ("Inicio · Escritorio" 4:186 y "Inicio · Móvil" 4:196)
+   Mobile-first. Puntos de corte: 768px (tableta) y 1024px (escritorio).
+   Sin estilos en línea: la CSP es style-src 'self'.
+
+   Índice
+   1. Fuentes (auto-alojadas, ver /fonts/LICENCIAS.txt)
+   2. Variables (:root)
+   3. Base y utilidades
+   4. Componentes comunes (botones, títulos, pincelada)
+   5. Cabecera y menú
+   6. Portada: inicio y marcador
+   7. Portada: equipos
+   8. Portada: calendario
+   9. Portada: cantera e inscripción
+   10. Portada: patrocinadores
+   11. Pie
+   12. Páginas legales y de error
+   ========================================================================== */
+
+/* 1. Fuentes ============================================================== */
+@font-face {
+    font-family: "Barlow Condensed";
+    font-style: italic;
+    font-weight: 900;
+    font-display: swap;
+    src: url("../fonts/barlow-condensed-latin-900-italic.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/inter-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("../fonts/inter-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Permanent Marker";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/permanent-marker-latin-400-normal.woff2") format("woff2");
+}
+
+/* 2. Variables ============================================================ */
+:root {
+    /* Colores (tomados del diseño) */
+    --azul-marino: #0b1f5c;
+    --azul-noche: #091849;
+    --azul-tarjeta: #142f70;
+    --azul-fila: #10265f;
+    --azul-proximo: #11296b;
+    --azul-destacado: #1e4fd8;
+    --amarillo: #ffc72c;
+    --amarillo-oscuro: #e6ac00;
+    --blanco: #ffffff;
+    --texto-suave: #bac9ec;
+    --texto-gris: #52617b;
+    --texto-placeholder: #5f6b82;
+    --campo-fondo: #f2f5fc;
+    --campo-borde: #dde4f1;
+    --casilla-borde: #68758d;
+    --fondo-claro: #eff3fc;
+
+    /* Tipografía */
+    --fuente-titular: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --fuente-rotulador: "Permanent Marker", "Comic Sans MS", cursive;
+
+    /* Espaciado y medidas */
+    --margen-lateral: 20px;
+    --ancho-max: 1280px;
+    --espacio-xs: 8px;
+    --espacio-s: 16px;
+    --espacio-m: 24px;
+    --espacio-l: 40px;
+    --espacio-xl: 64px;
+    --radio: 5px;
+    --radio-boton: 4px;
+    --altura-cabecera: 76px;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --margen-lateral: 80px;
+        --altura-cabecera: 96px;
+    }
+}
+
+/* 3. Base y utilidades ==================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--espacio-m);
+    -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    margin: 0;
+    font-family: var(--fuente-texto);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--blanco);
+    background: var(--azul-marino);
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid var(--amarillo);
+    outline-offset: 3px;
+}
+
+.seccion--clara :focus-visible {
+    outline-color: var(--azul-marino);
+}
+
+.visualmente-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.saltar-al-contenido {
+    position: absolute;
+    left: var(--espacio-s);
+    top: -100px;
+    z-index: 100;
+    padding: var(--espacio-xs) var(--espacio-s);
+    background: var(--amarillo);
+    color: var(--azul-marino);
+    font-weight: 600;
+    border-radius: var(--radio-boton);
+}
+
+.saltar-al-contenido:focus {
+    top: var(--espacio-s);
+}
+
+.contenedor {
+    width: min(100% - 2 * var(--margen-lateral), var(--ancho-max));
+    margin-inline: auto;
+}
+
+.seccion {
+    padding-block: var(--espacio-l);
+}
+
+@media (min-width: 1024px) {
+    .seccion {
+        padding-block: 34px var(--espacio-xl);
+    }
+}
+
+.seccion--clara {
+    background: var(--blanco);
+    color: var(--azul-marino);
+}
+
+/* 4. Componentes comunes ================================================== */
+.antetitulo {
+    font-size: 0.75rem;
+    color: var(--amarillo);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.antetitulo--gris {
+    color: var(--texto-gris);
+}
+
+.titular {
+    font-family: var(--fuente-titular);
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1.02;
+    text-transform: uppercase;
+}
+
+.titulo-seccion {
+    margin-top: 10px;
+    font-size: clamp(2.3rem, 1.6rem + 2.2vw, 3.06rem);
+}
+
+.entradilla {
+    margin-top: var(--espacio-xs);
+    font-size: 0.94rem;
+    color: var(--texto-suave);
+}
+
+.rotulador {
+    font-family: var(--fuente-rotulador);
+    color: var(--amarillo);
+    line-height: 1.45;
+}
+
+.boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 48px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: var(--radio-boton);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton--amarillo {
+    background: var(--amarillo);
+    color: var(--azul-marino);
+}
+
+.boton--amarillo:hover {
+    background: var(--amarillo-oscuro);
+}
+
+/* Titular con "pincelada" amarilla detrás (asset SVG del diseño) */
+.pincelada {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+    color: var(--azul-marino);
+    padding-inline: 6px 22px;
+}
+
+.pincelada::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 -2px -4px;
+    background: url("../img/pincelada.svg") no-repeat center / 100% 100%;
+}
+
+.pincelada--corta::before {
+    background-image: url("../img/pincelada-corta.svg");
+}
+
+/* 5. Cabecera y menú ====================================================== */
+.cabecera {
+    background: var(--azul-marino);
+    position: relative;
+    z-index: 10;
+}
+
+.cabecera__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--altura-cabecera);
+    gap: var(--espacio-s);
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.marca__escudo {
+    width: 38px;
+    height: auto;
+}
+
+.marca__texto {
+    display: flex;
+    flex-direction: column;
+}
+
+.marca__nombre {
+    font-family: var(--fuente-titular);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 1.375rem;
+    line-height: 0.96;
+    text-transform: uppercase;
+}
+
+.marca__sub {
+    margin-top: 6px;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.boton-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--blanco);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.boton-menu__icono--cerrar,
+.boton-menu[aria-expanded="true"] .boton-menu__icono--abrir {
+    display: none;
+}
+
+.boton-menu[aria-expanded="true"] .boton-menu__icono--cerrar {
+    display: inline;
+}
+
+/* Menú móvil: oculto hasta que el botón lo abre (sin JS, ver sin-js.css) */
+.menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: var(--espacio-s) var(--margen-lateral) var(--espacio-m);
+    background: var(--azul-marino);
+    border-top: 1px solid var(--azul-tarjeta);
+    box-shadow: 0 12px 24px rgb(0 0 0 / 0.3);
+}
+
+.menu--abierto {
+    display: block;
+}
+
+.menu__lista {
+    list-style: none;
+    padding: 0;
+}
+
+.menu__enlace {
+    display: block;
+    padding: 12px 0;
+    font-size: 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--azul-tarjeta);
+}
+
+.menu__enlace:hover,
+.menu__enlace[aria-current="page"] {
+    color: var(--amarillo);
+}
+
+.menu__accion {
+    margin-top: var(--espacio-m);
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .marca__escudo {
+        width: 48px;
+    }
+
+    .marca {
+        gap: 14px;
+    }
+
+    .marca__nombre {
+        font-size: 1.625rem;
+    }
+
+    .boton-menu {
+        display: none;
+    }
+
+    .menu {
+        display: flex;
+        position: static;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .menu__lista {
+        display: flex;
+        gap: clamp(24px, 4vw, 72px);
+        margin-inline: auto;
+    }
+
+    .menu__enlace {
+        padding: 8px 0;
+        font-size: 0.875rem;
+        border: 0;
+    }
+
+    .menu__accion {
+        width: auto;
+        min-width: 200px;
+        margin-top: 0;
+    }
+}
+
+/* 6. Portada: inicio y marcador =========================================== */
+.inicio {
+    position: relative;
+    overflow: hidden;
+    background: var(--azul-marino);
+}
+
+.inicio__foto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+/* Velo azul sobre la foto (móvil: 55 %; escritorio: 18 %) */
+.inicio__velo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: rgb(11 31 92 / 0.6);
+}
+
+.inicio__corte {
+    display: none;
+}
+
+.inicio__contenido {
+    position: relative;
+    padding-block: 26px var(--espacio-l);
+}
+
+.inicio__presentacion {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--espacio-s);
+}
+
+.inicio__escudo {
+    width: 65px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.inicio__lema-corto {
+    margin-top: 4px;
+    font-size: 0.94rem;
+    color: var(--texto-suave);
+}
+
+.inicio__titulo {
+    margin-top: 6px;
+    font-size: clamp(3.2rem, 2.6rem + 2vw, 3.875rem);
+    line-height: 0.96;
+}
+
+.inicio__subtitulo {
+    margin-top: var(--espacio-s);
+    font-size: 0.8125rem;
+}
+
+/* Tarjeta de último resultado */
+.marcador {
+    margin-top: var(--espacio-m);
+    padding: 17px 18px 18px;
+    background: var(--azul-tarjeta);
+    border-radius: 8px;
+}
+
+.marcador__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--espacio-s);
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.marcador__estado {
+    color: var(--amarillo);
+}
+
+.marcador__victoria {
+    margin-top: 10px;
+    font-size: 1.7rem;
+    line-height: 0.96;
+}
+
+.marcador__victoria .pincelada {
+    padding: 4px 22px 2px 10px;
+}
+
+.marcador__cuerpo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "tanteo tanteo"
+        "local visitante";
+    align-items: center;
+    row-gap: 6px;
+    margin-top: 8px;
+}
+
+.marcador__tanteo {
+    grid-area: tanteo;
+    justify-self: center;
+    font-family: var(--fuente-titular);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 4.8rem;
+    line-height: 0.96;
+    color: var(--amarillo);
+    white-space: nowrap;
+}
+
+.marcador__equipo {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.marcador__equipo--local {
+    grid-area: local;
+}
+
+.marcador__equipo--visitante {
+    grid-area: visitante;
+}
+
+.marcador__fecha {
+    margin-top: 12px;
+    font-size: 0.625rem;
+    color: var(--texto-suave);
+}
+
+/* Próximo partido */
+.proximo {
+    margin-top: 18px;
+    padding: 15px 18px 18px;
+    background: var(--azul-proximo);
+    border-radius: 6px;
+}
+
+.proximo__etiqueta {
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: var(--amarillo);
+    text-transform: uppercase;
+}
+
+.proximo__equipos {
+    margin-top: 8px;
+    font-size: 1.5625rem;
+    line-height: 0.96;
+}
+
+.proximo__detalle {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+.proximo__boton {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.inicio__rotulo {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .inicio__foto,
+    .inicio__velo {
+        height: 360px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .inicio {
+        min-height: 640px;
+    }
+
+    .inicio__foto {
+        left: auto;
+        right: 0;
+        width: 48%;
+        height: 100%;
+        object-position: center;
+    }
+
+    .inicio__velo {
+        left: auto;
+        right: 0;
+        width: 48%;
+        height: 100%;
+        background: rgb(11 31 92 / 0.18);
+    }
+
+    /* Corte diagonal (asset SVG del diseño, se estira a la altura de la sección) */
+    .inicio__corte {
+        display: block;
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 58.2%;
+        height: calc(100% + 2px);
+    }
+
+    .inicio__corte img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .inicio__contenido {
+        padding-block: 36px 48px;
+    }
+
+    .inicio__columna {
+        max-width: 650px;
+    }
+
+    .inicio__presentacion {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 26px;
+    }
+
+    .inicio__escudo {
+        width: 89px;
+    }
+
+    .inicio__titulo {
+        margin-top: 40px;
+    }
+
+    .inicio__subtitulo {
+        margin-top: 12px;
+        font-size: 1.0625rem;
+        color: var(--texto-suave);
+    }
+
+    .marcador {
+        max-width: 568px;
+        margin-top: 28px;
+        padding: 17px 24px 14px;
+        border-radius: var(--radio);
+    }
+
+    .marcador__meta {
+        font-size: 0.6875rem;
+    }
+
+    .marcador__victoria {
+        display: none;
+    }
+
+    .marcador__cuerpo {
+        grid-template-columns: 125px 1fr 110px;
+        grid-template-areas: "local tanteo visitante";
+        margin-top: 14px;
+    }
+
+    .marcador__tanteo {
+        font-size: 5.75rem;
+    }
+
+    .marcador__equipo {
+        font-family: var(--fuente-titular);
+        font-style: italic;
+        font-weight: 900;
+        font-size: 2.25rem;
+        line-height: 0.96;
+    }
+
+    .marcador__fecha {
+        font-size: 0.6875rem;
+    }
+
+    .proximo {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        max-width: 568px;
+        margin-top: 34px;
+        padding: 0;
+        background: none;
+    }
+
+    .proximo__equipos {
+        font-family: var(--fuente-texto);
+        font-style: normal;
+        font-weight: 600;
+        font-size: 1.0625rem;
+        line-height: 1.45;
+        text-transform: none;
+        margin-top: 4px;
+    }
+
+    .proximo__detalle {
+        margin-top: 2px;
+    }
+
+    .proximo__boton {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        width: 205px;
+        margin-top: 0;
+    }
+
+    .inicio__rotulo {
+        display: block;
+        position: absolute;
+        right: 85px;
+        bottom: 62px;
+        width: min(430px, 40%);
+        padding: 13px 18px;
+        background: var(--azul-marino);
+        border-radius: 3px;
+        font-size: 1.625rem;
+    }
+}
+
+/* 7. Portada: equipos ===================================================== */
+.equipos {
+    background: var(--azul-marino);
+}
+
+.equipos__lista {
+    display: grid;
+    gap: 15px;
+    margin-top: var(--espacio-l);
+    padding: 0;
+    list-style: none;
+}
+
+.tarjeta-equipo {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    column-gap: 10px;
+    align-items: center;
+    min-height: 96px;
+    padding: 13px 12px 13px 15px;
+    background: var(--azul-tarjeta);
+    border-radius: var(--radio);
+}
+
+.tarjeta-equipo__numero {
+    font-size: 1.94rem;
+    color: var(--amarillo);
+}
+
+.tarjeta-equipo__nombre {
+    font-size: 1.75rem;
+}
+
+.tarjeta-equipo__edad {
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+.tarjeta-equipo__horario {
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+.tarjeta-equipo__flecha {
+    align-self: start;
+    font-size: 1.25rem;
+    color: var(--amarillo);
+}
+
+.equipos__nota {
+    margin-top: var(--espacio-m);
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+@media (min-width: 768px) {
+    .equipos__lista {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .equipos__lista {
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 48px;
+    }
+
+    .tarjeta-equipo {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto auto auto;
+        align-items: start;
+        min-height: 176px;
+        padding: 18px 20px 20px;
+    }
+
+    .tarjeta-equipo__numero {
+        grid-column: 1;
+        grid-row: 1;
+        font-size: 1.3125rem;
+    }
+
+    .tarjeta-equipo__flecha {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 1.375rem;
+    }
+
+    .tarjeta-equipo__cuerpo {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        margin-top: 14px;
+    }
+
+    .tarjeta-equipo__nombre {
+        font-size: 2.25rem;
+    }
+
+    .tarjeta-equipo__edad {
+        margin-top: 8px;
+        font-size: 0.8125rem;
+        color: var(--blanco);
+    }
+
+    .tarjeta-equipo__horario {
+        margin-top: 6px;
+    }
+}
+
+/* 8. Portada: calendario ================================================== */
+.calendario {
+    background: var(--azul-noche);
+}
+
+.calendario__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--espacio-xs) var(--espacio-m);
+}
+
+.calendario__temporada {
+    font-size: 0.8125rem;
+    color: var(--texto-suave);
+}
+
+.pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: var(--espacio-m);
+}
+
+.pestanas__boton {
+    min-width: 96px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: var(--radio-boton);
+    background: var(--azul-tarjeta);
+    color: var(--blanco);
+    font-size: 0.75rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.pestanas__boton:hover {
+    background: var(--azul-destacado);
+}
+
+.pestanas__boton[aria-selected="true"] {
+    background: var(--amarillo);
+    color: var(--azul-marino);
+}
+
+.calendario__subtitulo {
+    margin-top: var(--espacio-l);
+    font-size: 1.375rem;
+}
+
+.calendario__panel {
+    margin-top: 14px;
+}
+
+.calendario__panel[hidden] {
+    display: none;
+}
+
+.partidos {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+}
+
+.partido {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    grid-template-areas:
+        "fecha equipos marcador"
+        "fecha equipos estado";
+    align-items: center;
+    column-gap: 12px;
+    min-height: 56px;
+    padding: 8px 12px;
+    background: var(--azul-fila);
+    border-radius: 3px;
+}
+
+.partido__fecha {
+    grid-area: fecha;
+    font-size: 0.6875rem;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.partido__equipos {
+    grid-area: equipos;
+    font-size: 0.875rem;
+}
+
+.partido__marcador {
+    grid-area: marcador;
+    justify-self: end;
+    font-size: 1.625rem;
+    color: var(--amarillo);
+    white-space: nowrap;
+}
+
+.partido__estado {
+    grid-area: estado;
+    justify-self: end;
+    font-size: 0.5625rem;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.calendario__nota {
+    margin-top: var(--espacio-m);
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+@media (min-width: 768px) {
+    .partido {
+        grid-template-columns: 80px 1fr 100px 70px;
+        grid-template-areas: "fecha equipos marcador estado";
+        padding: 0 12px;
+    }
+
+    .partido__marcador,
+    .partido__estado {
+        justify-self: start;
+    }
+}
+
+@media (min-width: 1024px) {
+    .calendario__temporada {
+        padding-bottom: 12px;
+    }
+
+    .calendario__lista {
+        max-width: 700px;
+    }
+}
+
+/* 9. Portada: cantera e inscripción ======================================= */
+.inscripcion__rejilla {
+    display: grid;
+    gap: var(--espacio-l);
+}
+
+.cantera {
+    padding: 21px 22px 28px;
+    background: var(--azul-marino);
+    color: var(--blanco);
+    border-radius: var(--radio);
+}
+
+.cantera__titulo {
+    margin-top: 10px;
+    font-size: 2.25rem;
+}
+
+.cantera__titulo .pincelada {
+    font-size: 2.45rem;
+}
+
+.cantera__titulo-resto {
+    display: block;
+    margin-top: 4px;
+}
+
+.cantera__texto {
+    margin-top: var(--espacio-s);
+    font-size: 0.8125rem;
+}
+
+.cantera__rotulo {
+    margin-top: var(--espacio-m);
+    font-size: 1.1rem;
+}
+
+.formulario__titulo {
+    font-size: 2rem;
+}
+
+.formulario__entradilla {
+    margin-top: 8px;
+    font-size: 0.8125rem;
+    color: var(--texto-gris);
+}
+
+.formulario__aviso {
+    margin-top: var(--espacio-s);
+    padding: 10px 14px;
+    border-left: 4px solid var(--amarillo);
+    background: var(--fondo-claro);
+    font-size: 0.8125rem;
+    color: var(--azul-marino);
+}
+
+.formulario__campos {
+    display: grid;
+    gap: 15px;
+    margin-top: var(--espacio-m);
+}
+
+.campo {
+    display: grid;
+    gap: 6px;
+}
+
+.campo__etiqueta {
+    font-size: 0.75rem;
+    color: var(--azul-marino);
+}
+
+.campo__ayuda {
+    font-size: 0.6875rem;
+    color: var(--texto-gris);
+}
+
+.campo__control {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 11px;
+    border: 1px solid var(--campo-borde);
+    border-radius: var(--radio-boton);
+    background: var(--campo-fondo);
+    color: var(--azul-marino);
+    font-size: 0.8125rem;
+}
+
+.campo__control::placeholder {
+    color: var(--texto-placeholder);
+    opacity: 1;
+}
+
+.campo__control:focus-visible {
+    outline: 3px solid var(--azul-marino);
+    outline-offset: 1px;
+}
+
+select.campo__control {
+    appearance: none;
+    padding-right: 36px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--texto-placeholder) 50%),
+        linear-gradient(135deg, var(--texto-placeholder) 50%, transparent 50%);
+    background-position: right 18px center, right 13px center;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.casilla {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.6875rem;
+    color: var(--texto-gris);
+}
+
+.casilla input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--azul-marino);
+}
+
+.casilla a {
+    color: var(--azul-marino);
+    font-weight: 600;
+}
+
+.formulario__boton {
+    width: 100%;
+    min-height: 50px;
+    padding-inline: 20px;
+    font-size: 0.94rem;
+    font-weight: 400;
+}
+
+.formulario__boton:disabled {
+    cursor: not-allowed;
+}
+
+.formulario__boton:disabled:hover {
+    background: var(--amarillo);
+}
+
+.formulario__pie {
+    font-size: 0.6875rem;
+    color: var(--texto-gris);
+}
+
+.formulario__fila {
+    display: grid;
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .formulario__fila {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .inscripcion {
+        padding-block: 52px 64px;
+    }
+
+    .inscripcion__rejilla {
+        grid-template-columns: 530px 1fr;
+        gap: 70px;
+        align-items: start;
+    }
+
+    .cantera {
+        min-height: 398px;
+        padding: 30px 32px;
+    }
+
+    .cantera__titulo {
+        margin-top: 14px;
+        font-size: 3.44rem;
+    }
+
+    .cantera__titulo .pincelada {
+        font-size: 3.56rem;
+    }
+
+    .cantera__texto {
+        margin-top: 24px;
+        max-width: 438px;
+        font-size: 1rem;
+    }
+
+    .cantera__rotulo {
+        margin-top: 40px;
+        font-size: 1.375rem;
+    }
+
+    .formulario__titulo {
+        font-size: 2.44rem;
+    }
+
+    .formulario__entradilla {
+        font-size: 0.875rem;
+    }
+}
+
+/* 10. Portada: patrocinadores ============================================= */
+.patrocinio {
+    background: var(--fondo-claro);
+    color: var(--azul-marino);
+    padding-block: 25px 30px;
+}
+
+.patrocinio__huecos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espacio-m) var(--espacio-l);
+    margin-top: var(--espacio-m);
+    padding: 0;
+    list-style: none;
+}
+
+.patrocinio__hueco {
+    font-size: 1.6rem;
+    line-height: 1.02;
+}
+
+.patrocinio__hueco:nth-child(2) {
+    font-size: 1.375rem;
+}
+
+.patrocinio__hueco:nth-child(3) {
+    font-size: 1.2rem;
+}
+
+.patrocinio__enlace {
+    display: inline-block;
+    margin-top: var(--espacio-m);
+    padding-block: 8px;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.patrocinio__enlace:hover {
+    text-decoration: underline;
+}
+
+.patrocinio__nota {
+    margin-top: var(--espacio-xs);
+    font-size: 0.625rem;
+    color: var(--texto-gris);
+}
+
+@media (min-width: 1024px) {
+    .patrocinio__fila {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--espacio-l);
+        margin-top: 26px;
+    }
+
+    .patrocinio__huecos {
+        flex: 1;
+        justify-content: space-between;
+        max-width: 1050px;
+        margin-top: 0;
+    }
+
+    .patrocinio__hueco {
+        font-size: 2rem;
+    }
+
+    .patrocinio__hueco:nth-child(2) {
+        font-size: 1.8rem;
+    }
+
+    .patrocinio__hueco:nth-child(3) {
+        font-size: 1.44rem;
+    }
+
+    .patrocinio__enlace {
+        margin-top: 0;
+        font-size: 0.8125rem;
+    }
+}
+
+/* 11. Pie ================================================================= */
+.pie {
+    background: var(--azul-marino);
+    padding-block: 30px 28px;
+}
+
+.pie__rejilla {
+    display: grid;
+    gap: var(--espacio-l);
+}
+
+.pie__nombre {
+    font-size: 2.25rem;
+}
+
+.pie__lema {
+    margin-top: 8px;
+    font-size: 0.8125rem;
+    color: var(--texto-suave);
+}
+
+.pie__redes {
+    margin-top: var(--espacio-s);
+    font-size: 0.8125rem;
+    color: var(--amarillo);
+}
+
+.pie__etiqueta {
+    font-size: 0.6875rem;
+    color: var(--amarillo);
+    text-transform: uppercase;
+}
+
+.pie__enlaces {
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+}
+
+.pie__enlaces a {
+    display: inline-block;
+    padding-block: 3px;
+    text-decoration: none;
+}
+
+.pie__enlaces a:hover,
+.pie__legal a:hover {
+    color: var(--amarillo);
+    text-decoration: underline;
+}
+
+.pie__contacto-titulo {
+    margin-top: 12px;
+    font-size: 1.5625rem;
+    text-transform: none;
+}
+
+.pie__contacto-texto {
+    margin-top: 10px;
+    font-size: 0.8125rem;
+    color: var(--texto-suave);
+}
+
+.pie__base {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--espacio-s);
+    margin-top: var(--espacio-l);
+    font-size: 0.625rem;
+    color: var(--texto-suave);
+}
+
+.pie__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    padding: 0;
+    list-style: none;
+}
+
+.pie__legal a {
+    display: inline-block;
+    padding-block: 6px;
+    text-decoration: none;
+}
+
+@media (min-width: 1024px) {
+    .pie {
+        padding-block: 44px 30px;
+    }
+
+    .pie__rejilla {
+        grid-template-columns: 482px 396px 1fr;
+        gap: 0;
+    }
+
+    .pie__nombre {
+        font-size: 2.44rem;
+    }
+
+    .pie__lema {
+        margin-top: 12px;
+        font-size: 0.875rem;
+    }
+
+    .pie__redes {
+        margin-top: 22px;
+    }
+
+    .pie__enlaces {
+        margin-top: 18px;
+    }
+
+    .pie__contacto-titulo {
+        margin-top: 18px;
+    }
+
+    .pie__base {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 72px;
+        font-size: 0.6875rem;
+    }
+}
+
+/* 12. Páginas legales y de error ========================================== */
+.pagina-legal {
+    padding-block: var(--espacio-l) var(--espacio-xl);
+    background: var(--blanco);
+    color: var(--azul-marino);
+}
+
+.pagina-legal__contenido {
+    max-width: 760px;
+}
+
+.pagina-legal__titulo {
+    font-size: clamp(2.3rem, 1.6rem + 2.2vw, 3.06rem);
+}
+
+.borrador {
+    margin-block: var(--espacio-m);
+    padding: 12px 16px;
+    border-left: 6px solid var(--amarillo);
+    background: var(--fondo-claro);
+    font-weight: 600;
+}
+
+.pagina-legal h2 {
+    margin-top: var(--espacio-l);
+    font-size: 1.6rem;
+}
+
+.pagina-legal p,
+.pagina-legal ul {
+    margin-top: 12px;
+    color: #2b3a57;
+}
+
+.pagina-legal li + li {
+    margin-top: 6px;
+}
+
+.pagina-legal a {
+    color: var(--azul-marino);
+    font-weight: 600;
+}
+
+.pendiente {
+    padding: 0 4px;
+    background: #fff1c7;
+    color: #5a4300;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+.error {
+    padding-block: var(--espacio-xl);
+    background: var(--azul-marino);
+    min-height: 60vh;
+}
+
+.error__codigo {
+    font-size: clamp(5rem, 4rem + 6vw, 9rem);
+    line-height: 0.9;
+    color: var(--amarillo);
+}
+
+.error__titulo {
+    margin-top: var(--espacio-s);
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+}
+
+.error__texto {
+    margin-top: var(--espacio-s);
+    max-width: 560px;
+    color: var(--texto-suave);
+}
+
+.error__boton {
+    margin-top: var(--espacio-m);
+}
