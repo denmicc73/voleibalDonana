@@ -1,12 +1,222 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Club Voleibol Almonte Doñana</title>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Almonte Doñana · Club de Voleibol en Almonte (Huelva)',
+        'Club de voleibol Almonte Doñana: resultados y calendario de partidos, equipos de todas las categorías e inscripciones abiertas en la cantera.')}">
+    <title>Almonte Doñana · Club de Voleibol en Almonte (Huelva)</title>
 </head>
 <body>
-<h1>Club Voleibol Almonte Doñana</h1>
-<p>Web en construcción</p>
+<div th:replace="~{fragments/header :: cabecera('inicio')}"></div>
+
+<!--
+  Portada (Fase 1). Secciones de la v1 según el diseño de Figma.
+  Omitidas hasta la v2: Noticias, Galería y Clasificación.
+  Los datos (resultados, partidos, categorías) son DE EJEMPLO: ver DatosEjemploService.
+-->
+<main id="contenido">
+
+    <!-- Inicio y marcador -->
+    <section class="inicio" id="inicio" aria-labelledby="titulo-inicio">
+        <!-- Foto PROVISIONAL (referencia del diseño), se sustituirá por fotos reales del club -->
+        <img class="inicio__foto" th:src="@{/img/foto-equipo-provisional.jpg}" width="928" height="1152"
+             alt="Imagen provisional: un equipo celebra abrazado en la pista tras ganar un partido">
+        <div class="inicio__velo" aria-hidden="true"></div>
+        <div class="inicio__corte" aria-hidden="true">
+            <img th:src="@{/img/corte-diagonal.svg}" alt="" width="839" height="641">
+        </div>
+
+        <div class="contenedor inicio__contenido">
+            <div class="inicio__columna">
+                <div class="inicio__presentacion">
+                    <img class="inicio__escudo" th:src="@{/img/escudo-provisional.svg}" alt="" width="89" height="100">
+                    <div>
+                        <p class="antetitulo">Orgullo de equipo</p>
+                        <p class="inicio__lema-corto">Dentro y fuera del campo.</p>
+                    </div>
+                </div>
+
+                <h1 class="titular inicio__titulo" id="titulo-inicio">En equipo. Imparables.</h1>
+                <p class="inicio__subtitulo">La pasión se entrena. El equipo se lleva dentro.</p>
+
+                <article class="marcador" aria-labelledby="titulo-marcador" th:object="${ultimoResultado}">
+                    <h2 class="marcador__meta" id="titulo-marcador">
+                        <span>Último resultado&nbsp; / &nbsp;<span th:text="*{categoria + ' · ' + jornada}">Sénior · J08</span></span>
+                        <span class="marcador__estado">Final</span>
+                    </h2>
+                    <p class="marcador__victoria" th:if="*{victoria}">
+                        <span class="titular pincelada pincelada--corta">¡Victoria!</span>
+                    </p>
+                    <p class="marcador__cuerpo">
+                        <span class="marcador__equipo marcador__equipo--local" th:text="*{local}">Almonte Doñana</span>
+                        <span class="marcador__tanteo" th:text="*{tanteo}">3 — 1</span>
+                        <span class="marcador__equipo marcador__equipo--visitante" th:text="*{visitante}">CD Rival</span>
+                    </p>
+                    <p class="marcador__fecha" th:text="*{fecha}">Domingo 08 de noviembre · En casa</p>
+                </article>
+
+                <div class="proximo" th:object="${proximoPartido}">
+                    <h2 class="proximo__etiqueta">Próximo partido</h2>
+                    <p class="titular proximo__equipos" th:text="*{local + '  /  ' + visitante}">CD Visitante / Almonte Doñana</p>
+                    <p class="proximo__detalle" th:text="*{detalle}">Dom. 15 nov. · 12:00 h · Campo rival</p>
+                    <a class="boton boton--amarillo proximo__boton" href="#calendario">Ver calendario &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <p class="rotulador inicio__rotulo">Aquí juega todo el mundo.</p>
+    </section>
+
+    <!-- Equipos. Categorías y horarios DE EJEMPLO (categorías oficiales de voleibol en Andalucía) -->
+    <section class="seccion equipos" id="equipos" aria-labelledby="titulo-equipos">
+        <div class="contenedor">
+            <p class="antetitulo">El mismo escudo. Todas las etapas.</p>
+            <h2 class="titular titulo-seccion" id="titulo-equipos">Un equipo para cada sueño</h2>
+            <p class="entradilla">Conoce cada categoría, sus edades y sus horarios de entrenamiento.</p>
+
+            <ul class="equipos__lista">
+                <li class="tarjeta-equipo" th:each="categoria, estado : ${categorias}">
+                    <span class="titular tarjeta-equipo__numero" aria-hidden="true"
+                          th:text="${#numbers.formatInteger(estado.count, 2)}">01</span>
+                    <div class="tarjeta-equipo__cuerpo">
+                        <h3 class="titular tarjeta-equipo__nombre" th:text="${categoria.nombre}">Sénior</h3>
+                        <p class="tarjeta-equipo__edad"
+                           th:text="${categoria.edad + ' · ' + categoria.nacidos}">Primer equipo</p>
+                        <p class="tarjeta-equipo__horario" th:text="${categoria.horario}">Mar. y jue. · 20:30 h</p>
+                    </div>
+                    <span class="tarjeta-equipo__flecha" aria-hidden="true">&rarr;</span>
+                </li>
+            </ul>
+            <p class="equipos__nota">Años de nacimiento y horarios orientativos para la temporada 2026/27.</p>
+        </div>
+    </section>
+
+    <!-- Calendario: solo la lista de partidos (la clasificación llega en la v2) -->
+    <section class="seccion calendario" id="calendario" aria-labelledby="titulo-calendario">
+        <div class="contenedor">
+            <p class="antetitulo">Cada jornada cuenta</p>
+            <div class="calendario__cabecera">
+                <h2 class="titular titulo-seccion" id="titulo-calendario">Nos vemos en el campo</h2>
+                <p class="calendario__temporada" th:text="${temporada}">Temporada 2026 / 27</p>
+            </div>
+
+            <div class="pestanas" role="tablist" aria-label="Categoría">
+                <button class="pestanas__boton" type="button" role="tab"
+                        th:each="bloque, estado : ${calendario}"
+                        th:id="${'pestana-' + bloque.categoria.id}"
+                        th:attr="aria-controls=${'panel-' + bloque.categoria.id},aria-selected=${estado.first}"
+                        th:tabindex="${estado.first} ? 0 : -1"
+                        th:text="${bloque.categoria.nombre}">Sénior</button>
+            </div>
+
+            <div class="calendario__lista">
+                <h3 class="titular calendario__subtitulo">Partidos</h3>
+                <div class="calendario__panel" role="tabpanel" tabindex="0"
+                     th:each="bloque : ${calendario}"
+                     th:id="${'panel-' + bloque.categoria.id}"
+                     th:attr="aria-labelledby=${'pestana-' + bloque.categoria.id}">
+                    <h4 class="visualmente-oculto" th:text="${'Partidos · ' + bloque.categoria.nombre}">Partidos · Sénior</h4>
+                    <ul class="partidos">
+                        <li class="partido" th:each="partido : ${bloque.partidos}">
+                            <span class="partido__fecha" th:text="${partido.fecha}">08 nov</span>
+                            <span class="partido__equipos" th:text="${partido.local + ' — ' + partido.visitante}">Almonte Doñana — CD Rival</span>
+                            <span class="titular partido__marcador"
+                                  th:text="${partido.jugado()} ? ${partido.tanteo} : ${partido.hora}">3 – 1</span>
+                            <span class="partido__estado" th:text="${partido.estado}">Final</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p class="calendario__nota">Calendario de ejemplo: los partidos reales se publicarán desde el panel del club.</p>
+        </div>
+    </section>
+
+    <!-- Cantera e inscripción -->
+    <section class="seccion seccion--clara inscripcion" id="inscripcion" aria-labelledby="titulo-cantera">
+        <div class="contenedor inscripcion__rejilla">
+            <div class="cantera">
+                <p class="antetitulo">Cantera · Inscripciones abiertas</p>
+                <h2 class="titular cantera__titulo" id="titulo-cantera">
+                    <span class="pincelada">Tu sitio</span>
+                    <span class="cantera__titulo-resto">está en el equipo.</span>
+                </h2>
+                <p class="cantera__texto">Ven a aprender, a disfrutar y a crecer con el club. No hace falta experiencia. Solo ganas.</p>
+                <p class="rotulador cantera__rotulo">El próximo paso lo damos en equipo.</p>
+            </div>
+
+            <!--
+              Formulario CORTO de solicitud, solo MAQUETA (Fase 1).
+              Se procesará en la Fase 5: th:action ya incluye el token CSRF y apunta a /inscripcion,
+              pero aún NO existe el controlador POST, por eso el botón está deshabilitado y se avisa.
+            -->
+            <form class="formulario" th:action="@{/inscripcion}" method="post" aria-labelledby="titulo-formulario"
+                  aria-describedby="aviso-formulario">
+                <h3 class="titular formulario__titulo" id="titulo-formulario">¿Te vienes?</h3>
+                <p class="formulario__entradilla">Déjanos tus datos y te contamos cómo empezar.</p>
+                <p class="formulario__aviso" id="aviso-formulario">
+                    Formulario en preparación: todavía no se puede enviar. Muy pronto podrás mandar tu solicitud desde aquí.
+                </p>
+
+                <div class="formulario__campos">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="nombre">Nombre y apellidos</label>
+                        <input class="campo__control" id="nombre" name="nombre" type="text" autocomplete="name"
+                               placeholder="Tu nombre y apellidos" maxlength="100" required aria-describedby="nombre-ayuda">
+                        <p class="campo__ayuda" id="nombre-ayuda">Si es para un menor, el de su madre, padre o tutor/a.</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="email">Correo electrónico</label>
+                        <input class="campo__control" id="email" name="email" type="email" autocomplete="email"
+                               placeholder="tu@email.com" maxlength="150" required>
+                    </div>
+                    <div class="formulario__fila">
+                        <div class="campo">
+                            <label class="campo__etiqueta" for="anioNacimiento">Año de nacimiento</label>
+                            <select class="campo__control" id="anioNacimiento" name="anioNacimiento" required>
+                                <option value="">Selecciona el año</option>
+                                <option th:each="anio : ${aniosNacimiento}" th:value="${anio}" th:text="${anio}">2014</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <label class="campo__etiqueta" for="categoria">Categoría de interés</label>
+                            <select class="campo__control" id="categoria" name="categoria" required>
+                                <option value="">Selecciona categoría</option>
+                                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                        th:text="${categoria.nombre}">Infantil</option>
+                                <option value="no-se">No lo sé</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="casilla">
+                        <input id="privacidad" name="privacidad" type="checkbox" required>
+                        <label for="privacidad">He leído la <a th:href="@{/privacidad}">política de privacidad</a>
+                            y acepto que el club contacte conmigo.</label>
+                    </div>
+                    <button class="boton boton--amarillo formulario__boton" type="submit" disabled>
+                        Quiero formar parte del equipo &rarr;
+                    </button>
+                    <p class="formulario__pie">Sin compromiso. Te ayudamos a encontrar tu equipo.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Patrocinadores: huecos provisionales hasta tener los logos -->
+    <section class="patrocinio seccion--clara" id="patrocinio" aria-labelledby="titulo-patrocinio">
+        <div class="contenedor">
+            <h2 class="antetitulo antetitulo--gris" id="titulo-patrocinio">El equipo también se construye fuera del campo</h2>
+            <div class="patrocinio__fila">
+                <ul class="patrocinio__huecos" aria-label="Espacios de patrocinio disponibles">
+                    <li class="titular patrocinio__hueco">Tu marca</li>
+                    <li class="titular patrocinio__hueco">Comercio local</li>
+                    <li class="titular patrocinio__hueco">Empresa colaboradora</li>
+                </ul>
+                <a class="patrocinio__enlace" href="#contacto">Patrocina al club &rarr;</a>
+            </div>
+            <p class="patrocinio__nota">Espacios de patrocinio · logos por incorporar</p>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+<script th:src="@{/js/pestanas.js}" defer></script>
 </body>
 </html>
