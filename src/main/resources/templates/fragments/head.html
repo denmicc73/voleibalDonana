@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!--
+  Cabecera HTML común. Uso:
+  <head th:replace="~{fragments/head :: head('Título de la página', 'Descripción para buscadores')}"></head>
+  Sin estilos ni scripts en línea (CSP: style-src 'self'; script-src 'self').
+-->
+<head th:fragment="head(titulo, descripcion)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo}">Almonte Doñana · Club de Voleibol</title>
+    <meta name="description" th:content="${descripcion}">
+    <meta name="theme-color" content="#0b1f5c">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/escudo-provisional.svg}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          th:href="@{/fonts/barlow-condensed-latin-900-italic.woff2}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          th:href="@{/fonts/inter-latin-400-normal.woff2}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <noscript><link rel="stylesheet" th:href="@{/css/sin-js.css}"></noscript>
+    <script th:src="@{/js/menu.js}" defer></script>
+</head>
+</html>

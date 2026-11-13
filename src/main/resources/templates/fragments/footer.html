@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+  Pie común (sección "Contacto" del diseño). Uso:
+  <footer th:replace="~{fragments/footer :: pie}"></footer>
+  Dirección, horarios, contacto y redes: pendientes de que los facilite el club.
+-->
+<footer class="pie" id="contacto" th:fragment="pie">
+    <div class="contenedor">
+        <div class="pie__rejilla">
+            <div>
+                <p class="titular pie__nombre">Almonte Doñana</p>
+                <p class="pie__lema">Más que deporte. Una forma de crecer en equipo.</p>
+                <p class="pie__redes">Instagram · próximamente</p>
+            </div>
+            <nav aria-labelledby="pie-club">
+                <p class="pie__etiqueta" id="pie-club">El club</p>
+                <ul class="pie__enlaces">
+                    <li><a th:href="@{/#equipos}">Equipos</a></li>
+                    <li><a th:href="@{/#calendario}">Calendario y resultados</a></li>
+                    <li><a th:href="@{/#inscripcion}">Cantera e inscripciones</a></li>
+                    <li><a th:href="@{/#patrocinio}">Patrocinio</a></li>
+                </ul>
+            </nav>
+            <div>
+                <p class="pie__etiqueta">Contacto y entrenamientos</p>
+                <p class="titular pie__contacto-titulo">Ven a conocernos</p>
+                <p class="pie__contacto-texto">Dirección, horarios y contacto del club pendientes de confirmar.</p>
+            </div>
+        </div>
+        <div class="pie__base">
+            <p>Almonte Doñana · Club de Voleibol · Almonte (Huelva). Imágenes y datos de ejemplo.</p>
+            <ul class="pie__legal" aria-label="Información legal">
+                <li><a th:href="@{/privacidad}">Privacidad</a></li>
+                <li><a th:href="@{/cookies}">Cookies</a></li>
+                <li><a th:href="@{/aviso-legal}">Aviso legal</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

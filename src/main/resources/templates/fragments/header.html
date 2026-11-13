@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+  Cabecera común con escudo, nombre y menú principal. Uso:
+  <div th:replace="~{fragments/header :: cabecera('inicio')}"></div>
+  El parámetro "activo" marca con aria-current el enlace de la página actual ('' si ninguno).
+  En móvil, el botón hamburguesa abre/cierra el menú (static/js/menu.js).
+-->
+<th:block th:fragment="cabecera(activo)">
+    <a class="saltar-al-contenido" href="#contenido">Saltar al contenido</a>
+    <header class="cabecera">
+        <div class="contenedor cabecera__barra">
+            <a class="marca" th:href="@{/}">
+                <!-- Escudo PROVISIONAL del diseño: se sustituirá por el escudo real del club -->
+                <img class="marca__escudo" th:src="@{/img/escudo-provisional.svg}" alt="" width="48" height="54">
+                <span class="marca__texto">
+                    <span class="marca__nombre">Almonte Doñana</span>
+                    <span class="marca__sub">Club de Voleibol · Almonte</span>
+                </span>
+            </a>
+            <button class="boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal">
+                <span class="visualmente-oculto">Menú</span>
+                <span class="boton-menu__icono--abrir" aria-hidden="true">&#9776;</span>
+                <span class="boton-menu__icono--cerrar" aria-hidden="true">&#10005;</span>
+            </button>
+            <nav class="menu" id="menu-principal" aria-label="Principal">
+                <ul class="menu__lista">
+                    <li><a class="menu__enlace" th:href="@{/}"
+                           th:attr="aria-current=${activo == 'inicio'} ? 'page'">Inicio</a></li>
+                    <li><a class="menu__enlace" th:href="@{/#equipos}">Equipos</a></li>
+                    <li><a class="menu__enlace" th:href="@{/#calendario}">Calendario</a></li>
+                    <li><a class="menu__enlace" th:href="@{/#inscripcion}">Inscripción</a></li>
+                    <li><a class="menu__enlace" th:href="@{/#patrocinio}">Patrocinio</a></li>
+                </ul>
+                <a class="boton boton--amarillo menu__accion" th:href="@{/#inscripcion}">Únete al equipo &rarr;</a>
+            </nav>
+        </div>
+    </header>
+</th:block>
+</body>
+</html>
