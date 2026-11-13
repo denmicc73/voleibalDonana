@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Página no encontrada · Almonte Doñana',
+        'La página que buscas no existe en la web del club de voleibol Almonte Doñana.')}">
+    <title>Página no encontrada · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('')}"></div>
+
+<main id="contenido" class="error">
+    <div class="contenedor">
+        <p class="titular error__codigo" aria-hidden="true">404</p>
+        <h1 class="titular error__titulo">Fuera de la pista</h1>
+        <p class="error__texto">La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio para ver
+            equipos, calendario e inscripciones.</p>
+        <a class="boton boton--amarillo error__boton" th:href="@{/}">Volver al inicio &rarr;</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

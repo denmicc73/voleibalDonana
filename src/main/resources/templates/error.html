@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ha ocurrido un error - Club Voleibol Almonte Doñana</title>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!-- Página de error genérica (otros códigos distintos de 404 y 500, que tienen la suya en error/). -->
+<head th:replace="~{fragments/head :: head('Ha ocurrido un error · Almonte Doñana',
+        'Se ha producido un error en la web del club de voleibol Almonte Doñana.')}">
+    <title>Ha ocurrido un error · Almonte Doñana</title>
 </head>
 <body>
-<h1>Algo no ha ido bien</h1>
-<p>No hemos podido mostrar esta página. Vuelve a intentarlo más tarde.</p>
-<p><a href="/">Volver al inicio</a></p>
+<div th:replace="~{fragments/header :: cabecera('')}"></div>
+
+<main id="contenido" class="error">
+    <div class="contenedor">
+        <h1 class="titular error__titulo">Algo no ha ido bien</h1>
+        <p class="error__texto">No hemos podido mostrar esta página. Vuelve a intentarlo más tarde.</p>
+        <a class="boton boton--amarillo error__boton" th:href="@{/}">Volver al inicio &rarr;</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
 </body>
 </html>

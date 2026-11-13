@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Error del servidor · Almonte Doñana',
+        'Se ha producido un error en la web del club de voleibol Almonte Doñana.')}">
+    <title>Error del servidor · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('')}"></div>
+
+<main id="contenido" class="error">
+    <div class="contenedor">
+        <p class="titular error__codigo" aria-hidden="true">500</p>
+        <h1 class="titular error__titulo">Tiempo muerto</h1>
+        <p class="error__texto">Algo no ha ido bien en el servidor. Estamos en ello: vuelve a intentarlo en unos
+            minutos.</p>
+        <a class="boton boton--amarillo error__boton" th:href="@{/}">Volver al inicio &rarr;</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>
