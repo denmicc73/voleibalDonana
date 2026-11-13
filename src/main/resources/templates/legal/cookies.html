@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Política de cookies · Almonte Doñana',
+        'Qué cookies usa la web del club de voleibol Almonte Doñana: solo cookies técnicas necesarias, sin analítica ni publicidad.')}">
+    <title>Política de cookies · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('')}"></div>
+
+<!-- BORRADOR: texto orientativo pendiente de revisión por el club (y, si procede, asesoría legal). -->
+<main id="contenido" class="pagina-legal seccion--clara">
+    <div class="contenedor pagina-legal__contenido">
+        <h1 class="titular pagina-legal__titulo">Política de cookies</h1>
+        <p class="borrador" role="note">Borrador — pendiente de revisión por el club.</p>
+
+        <h2 class="titular">Qué son las cookies</h2>
+        <p>Son pequeños archivos que la web guarda en tu navegador para poder funcionar o para recordar información
+            entre una página y otra.</p>
+
+        <h2 class="titular">Cookies que usa esta web</h2>
+        <p>Solo cookies técnicas, necesarias para que la web funcione con seguridad:</p>
+        <ul>
+            <li><strong>JSESSIONID</strong> (propia, de sesión): mantiene la sesión y protege los formularios frente a
+                envíos falsificados (CSRF). Se borra al cerrar el navegador o tras 30 minutos sin actividad.</li>
+        </ul>
+        <p>Estas cookies están exentas de consentimiento (artículo 22.2 de la LSSI-CE). La web no usa cookies de
+            analítica, publicidad ni redes sociales.</p>
+
+        <h2 class="titular">Cambios</h2>
+        <p>Si en el futuro se añaden cookies que no sean técnicas, se pedirá tu consentimiento antes de usarlas y se
+            actualizará esta página.</p>
+
+        <h2 class="titular">Cómo gestionarlas</h2>
+        <p>Puedes borrar o bloquear las cookies desde la configuración de tu navegador. Si bloqueas las técnicas,
+            algunos formularios podrían no funcionar.</p>
+
+        <p>Responsable: Club Voleibol Almonte Doñana <span class="pendiente">[pendiente]</span>. Más información en la
+            <a th:href="@{/privacidad}">política de privacidad</a>.</p>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

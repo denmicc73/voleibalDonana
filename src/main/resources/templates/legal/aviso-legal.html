@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Aviso legal · Almonte Doñana',
+        'Aviso legal de la web del club de voleibol Almonte Doñana: titular, condiciones de uso y propiedad intelectual.')}">
+    <title>Aviso legal · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('')}"></div>
+
+<!-- BORRADOR: texto orientativo pendiente de revisión por el club (y, si procede, asesoría legal). -->
+<main id="contenido" class="pagina-legal seccion--clara">
+    <div class="contenedor pagina-legal__contenido">
+        <h1 class="titular pagina-legal__titulo">Aviso legal</h1>
+        <p class="borrador" role="note">Borrador — pendiente de revisión por el club.</p>
+
+        <h2 class="titular">Titular de la web</h2>
+        <ul>
+            <li>Denominación: Club Voleibol Almonte Doñana <span class="pendiente">[pendiente]</span></li>
+            <li>CIF: <span class="pendiente">[pendiente]</span></li>
+            <li>Domicilio: <span class="pendiente">[pendiente]</span>, Almonte (Huelva)</li>
+            <li>Inscripción en el Registro Andaluz de Entidades Deportivas: <span class="pendiente">[pendiente]</span></li>
+            <li>Correo de contacto: <span class="pendiente">[pendiente]</span></li>
+        </ul>
+
+        <h2 class="titular">Objeto</h2>
+        <p>Esta web informa sobre la actividad del club: equipos, calendario y resultados, inscripciones y patrocinio.</p>
+
+        <h2 class="titular">Condiciones de uso</h2>
+        <p>El acceso a la web es libre y gratuito. Quien la utiliza se compromete a hacerlo de forma lícita y a no
+            dañar su funcionamiento ni los datos que contiene.</p>
+
+        <h2 class="titular">Propiedad intelectual e imágenes</h2>
+        <p>El escudo, los textos y el diseño pertenecen al club o se usan con permiso. Las fotografías de equipos y
+            personas se publican con el consentimiento correspondiente <span class="pendiente">[pendiente]</span>.
+            No se permite reutilizarlos sin autorización.</p>
+
+        <h2 class="titular">Responsabilidad</h2>
+        <p>El club procura que la información (horarios, resultados, calendario) sea correcta y esté al día, pero no
+            garantiza la ausencia de errores puntuales. Los enlaces a webs de terceros se ofrecen solo como
+            referencia.</p>
+
+        <h2 class="titular">Legislación aplicable</h2>
+        <p>Este aviso se rige por la legislación española, en particular la Ley 34/2002, de servicios de la sociedad
+            de la información y de comercio electrónico (LSSI-CE).</p>
+
+        <p>Consulta también la <a th:href="@{/privacidad}">política de privacidad</a> y la
+            <a th:href="@{/cookies}">política de cookies</a>.</p>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>
