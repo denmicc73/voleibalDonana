@@ -1,6 +1,8 @@
 # Club Voleibol Almonte Doñana
 
-Web del club de voleibol Almonte Doñana (Almonte, Huelva): marcadores, inscripción por categorías y patrocinadores. Estado: Fase 0 (esqueleto).
+Web del club de voleibol Almonte Doñana (Almonte, Huelva): marcadores, inscripción por categorías y patrocinadores. Estado: Fase 1 (diseño base: portada con datos de ejemplo, páginas legales en borrador y páginas de error).
+
+Estructura de la parte visual: plantillas Thymeleaf en `src/main/resources/templates` (fragmentos comunes en `fragments/`, legales en `legal/`, errores en `error/`) y recursos estáticos en `src/main/resources/static` (`css/`, `js/`, `fonts/` auto-alojadas y `img/`). El escudo y la foto actuales son provisionales.
 
 ## Requisitos
 - JDK 25

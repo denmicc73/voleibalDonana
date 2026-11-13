@@ -14,6 +14,8 @@ Objetivos de la v1:
 - **Diseño**: Figma, fileKey `k9Z3RmFeCKsRn1GRyHbHxZ`, frames "Inicio · Escritorio" (4:186) e "Inicio · Móvil" (4:196). Azul marino + amarillo, titulares en cursiva y cortes diagonales.
   - En el diseño, "Club Azul / Deportivo Femenino" es provisional: usar **Almonte Doñana**.
   - Los textos del diseño están en femenino ("juntas", "nosotras"). Como el club es mixto, usar redacción **inclusiva/neutra**.
+  - **Tipografía** (auto-alojada en `static/fonts`, OFL): Barlow Condensed 900 cursiva para titulares, Inter 400/600 para texto y Permanent Marker para lemas. No usar Google Fonts remoto (la CSP es `font-src 'self'`).
+  - **CSS**: un único `static/css/estilos.css`, mobile-first, colores/fuentes/espaciados como variables en `:root`, nombres de clase en español tipo BEM (`bloque__elemento--modificador`), cortes a 768 y 1024 px. Sin `style=""` ni `<script>` en línea (CSP). Layout con fragmentos en `templates/fragments` (head, header, footer).
 - **Fotos**: provisionales hasta tener las reales. Los logos (escudo y patrocinadores) los aporta el usuario.
 - **v2 (pospuesto)**: noticias, galería de fotos/vídeos, clasificación, marcador en tiempo real, pagos online y área de socios.
 - **Hosting**: sin decidir (recomendado Railway). Repositorio: https://github.com/denmicc73/voleibalDonana (rama main).
