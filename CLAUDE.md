@@ -44,6 +44,7 @@ Objetivos de la v1:
 - Credenciales solo por variables de entorno (.env.example sin valores).
 - CSRF siempre activo.
 - Datos de menores con consentimiento del tutor y acceso solo ADMIN.
+- Panel: roles ADMIN (todo) y EDITOR (solo resultados y calendario; nunca inscripciones ni usuarios). Las rutas nuevas de datos personales van bajo `/admin/inscripciones/**` o se añaden a la regla de ADMIN en `SecurityConfig`.
 
 ## Flujo de agentes
 1. agente-arquitectura (planificar)
