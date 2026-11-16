@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Añadir usuario · Panel · Almonte Doñana', 'Alta de un usuario del panel.')}">
+    <title>Añadir usuario · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('usuarios')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/usuarios}">&larr; Usuarios</a></p>
+        <h1 class="titular panel__titulo">Añadir usuario</h1>
+        <p class="panel__entradilla">Comunica la contraseña inicial en persona y pide que la cambie en "Mi cuenta".</p>
+
+        <form class="panel-formulario" th:action="@{/admin/usuarios}" th:object="${form}" method="post" novalidate>
+            <div class="formulario__campos">
+                <div class="campo">
+                    <label class="campo__etiqueta" for="nombre">Nombre</label>
+                    <input class="campo__control" type="text" th:field="*{nombre}" required maxlength="100"
+                           autocomplete="off" th:errorclass="campo__control--error"
+                           th:attr="aria-describedby=${#fields.hasErrors('nombre')} ? 'nombre-error'">
+                    <p class="campo__error" id="nombre-error" th:if="${#fields.hasErrors('nombre')}"
+                       th:errors="*{nombre}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="email">Email</label>
+                    <input class="campo__control" type="email" th:field="*{email}" required maxlength="254"
+                           autocomplete="off" th:errorclass="campo__control--error"
+                           th:attr="aria-describedby=${#fields.hasErrors('email')} ? 'email-error'">
+                    <p class="campo__error" id="email-error" th:if="${#fields.hasErrors('email')}"
+                       th:errors="*{email}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="rol">Rol</label>
+                    <select class="campo__control" th:field="*{rol}" required th:errorclass="campo__control--error">
+                        <option th:each="r : ${roles}" th:value="${r}" th:text="${r.descripcion}">Rol</option>
+                    </select>
+                    <p class="campo__error" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="password">Contraseña inicial</label>
+                    <p class="campo__ayuda">Mínimo 12 caracteres.</p>
+                    <!-- Sin th:field: la contraseña no se devuelve en la página si hay errores -->
+                    <input class="campo__control" id="password" name="password" type="password" required
+                           minlength="12" maxlength="72" autocomplete="new-password"
+                           th:classappend="${#fields.hasErrors('password')} ? 'campo__control--error'"
+                           th:attr="aria-describedby=${#fields.hasErrors('password')} ? 'password-error'">
+                    <p class="campo__error" id="password-error" th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}">Error</p>
+                </div>
+                <button class="boton boton--amarillo formulario__boton" type="submit">Crear usuario</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
