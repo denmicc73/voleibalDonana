@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Acceso al panel · Almonte Doñana',
+        'Acceso al panel de administración del club de voleibol Almonte Doñana.')}">
+    <title>Acceso al panel · Almonte Doñana</title>
+</head>
+<body>
+<main id="contenido" class="acceso">
+    <div class="acceso__tarjeta">
+        <a class="acceso__marca" th:href="@{/}">
+            <img th:src="@{/img/escudo-provisional.svg}" alt="" width="56" height="63">
+            <span class="titular">Almonte Doñana</span>
+        </a>
+        <h1 class="titular acceso__titulo">Panel del club</h1>
+        <p class="acceso__entradilla">Acceso solo para la directiva y el cuerpo técnico.</p>
+
+        <p class="aviso aviso--error" role="alert" th:if="${param.error}">
+            Email o contraseña incorrectos, o cuenta bloqueada temporalmente por varios intentos fallidos.
+            Si no puedes entrar, espera unos minutos o avisa a la administración del club.
+        </p>
+        <p class="aviso aviso--ok" role="status" th:if="${param.salir}">Has cerrado sesión.</p>
+
+        <form class="formulario__campos" th:action="@{/admin/login}" method="post">
+            <div class="campo">
+                <label class="campo__etiqueta" for="email">Email</label>
+                <input class="campo__control" id="email" name="email" type="email" autocomplete="username"
+                       required autofocus maxlength="254">
+            </div>
+            <div class="campo">
+                <label class="campo__etiqueta" for="password">Contraseña</label>
+                <input class="campo__control" id="password" name="password" type="password"
+                       autocomplete="current-password" required maxlength="72">
+            </div>
+            <button class="boton boton--amarillo formulario__boton" type="submit">Entrar &rarr;</button>
+        </form>
+
+        <p class="acceso__volver"><a th:href="@{/}">&larr; Volver a la web</a></p>
+    </div>
+</main>
+</body>
+</html>

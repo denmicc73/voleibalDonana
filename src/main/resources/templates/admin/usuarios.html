@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Usuarios · Panel · Almonte Doñana', 'Usuarios del panel.')}">
+    <title>Usuarios · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('usuarios')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <div class="panel__cabecera">
+            <div>
+                <h1 class="titular panel__titulo">Usuarios</h1>
+                <p class="panel__entradilla">Administración: acceso completo, incluidas las inscripciones.
+                    Edición de resultados: solo partidos y calendario.</p>
+            </div>
+            <a class="boton boton--amarillo" th:href="@{/admin/usuarios/nuevo}">Añadir usuario &rarr;</a>
+        </div>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <caption class="visualmente-oculto">Personas con acceso al panel</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Último acceso</th>
+                    <th scope="col"><span class="visualmente-oculto">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${usuarios}">
+                    <td th:text="${u.nombre}">Nombre</td>
+                    <td th:text="${u.email}">email</td>
+                    <td th:text="${u.rol.descripcion}">Rol</td>
+                    <td>
+                        <span class="etiqueta etiqueta--ok" th:if="${u.activo and !u.bloqueado}">Activa</span>
+                        <span class="etiqueta etiqueta--aviso" th:if="${u.activo and u.bloqueado}">Bloqueada</span>
+                        <span class="etiqueta etiqueta--apagada" th:unless="${u.activo}">Desactivada</span>
+                    </td>
+                    <td th:text="${u.ultimoAcceso != null} ? ${#temporals.format(u.ultimoAcceso, 'dd/MM/yyyy HH:mm')} : 'Nunca'">
+                        Nunca
+                    </td>
+                    <td>
+                        <div class="tabla__botones">
+                        <form th:if="${u.bloqueado}" th:action="@{/admin/usuarios/{id}/desbloquear(id=${u.id})}" method="post">
+                            <button class="boton boton--contorno boton--pequeno" type="submit">Desbloquear</button>
+                        </form>
+                        <form th:if="${u.activo and u.email != usuarioActual?.email}"
+                              th:action="@{/admin/usuarios/{id}/desactivar(id=${u.id})}" method="post">
+                            <button class="boton boton--contorno boton--pequeno" type="submit">Desactivar</button>
+                        </form>
+                        <form th:unless="${u.activo}" th:action="@{/admin/usuarios/{id}/activar(id=${u.id})}" method="post">
+                            <button class="boton boton--contorno boton--pequeno" type="submit">Activar</button>
+                        </form>
+                    </div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

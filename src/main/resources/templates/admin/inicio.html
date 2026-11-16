@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Panel · Almonte Doñana', 'Panel de administración del club.')}">
+    <title>Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('inicio')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <h1 class="titular panel__titulo">
+            Hola<th:block th:if="${usuarioActual != null}">, <span th:text="${usuarioActual.nombre}">Nombre</span></th:block>
+        </h1>
+        <p class="panel__entradilla">Desde aquí el club mantiene al día la web.</p>
+
+        <ul class="panel-tarjetas">
+            <li class="panel-tarjeta panel-tarjeta--pendiente">
+                <h2 class="titular panel-tarjeta__titulo">Resultados y calendario</h2>
+                <p class="panel-tarjeta__texto">Partidos, resultados set a set y próximos encuentros.</p>
+                <p class="etiqueta etiqueta--apagada">Próximamente</p>
+            </li>
+            <li class="panel-tarjeta panel-tarjeta--pendiente"
+                th:if="${usuarioActual != null and usuarioActual.admin}">
+                <h2 class="titular panel-tarjeta__titulo">Inscripciones</h2>
+                <p class="panel-tarjeta__texto">Solicitudes recibidas desde la web.</p>
+                <p class="etiqueta etiqueta--apagada">Próximamente</p>
+            </li>
+            <li class="panel-tarjeta" th:if="${usuarioActual != null and usuarioActual.admin}">
+                <h2 class="titular panel-tarjeta__titulo">Usuarios</h2>
+                <p class="panel-tarjeta__texto">Quién puede entrar al panel y con qué permisos.</p>
+                <a class="boton boton--amarillo" th:href="@{/admin/usuarios}">Gestionar usuarios &rarr;</a>
+            </li>
+            <li class="panel-tarjeta">
+                <h2 class="titular panel-tarjeta__titulo">Mi cuenta</h2>
+                <p class="panel-tarjeta__texto">Cambia tu contraseña.</p>
+                <a class="boton boton--amarillo" th:href="@{/admin/cuenta}">Ir a mi cuenta &rarr;</a>
+            </li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

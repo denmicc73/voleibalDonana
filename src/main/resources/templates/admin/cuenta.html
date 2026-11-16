@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Mi cuenta · Panel · Almonte Doñana', 'Cambio de contraseña.')}">
+    <title>Mi cuenta · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('cuenta')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <h1 class="titular panel__titulo">Mi cuenta</h1>
+        <p class="panel__entradilla" th:if="${usuarioActual != null}">
+            Has entrado como <strong th:text="${usuarioActual.email}">email</strong>.
+        </p>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <!-- Los campos de contraseña no se rellenan nunca con lo enviado (sin th:field a propósito). -->
+        <form class="panel-formulario" th:action="@{/admin/cuenta}" th:object="${form}" method="post" novalidate>
+            <h2 class="titular panel-formulario__titulo">Cambiar contraseña</h2>
+            <p class="campo__ayuda">Mínimo 12 caracteres. Una frase que recuerdes es mejor que una palabra con símbolos.</p>
+            <div class="formulario__campos">
+                <div class="campo">
+                    <label class="campo__etiqueta" for="actual">Contraseña actual</label>
+                    <input class="campo__control" id="actual" name="actual" type="password"
+                           autocomplete="current-password" required
+                           th:classappend="${#fields.hasErrors('actual')} ? 'campo__control--error'"
+                           th:attr="aria-describedby=${#fields.hasErrors('actual')} ? 'actual-error'">
+                    <p class="campo__error" id="actual-error" th:if="${#fields.hasErrors('actual')}"
+                       th:errors="*{actual}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="nueva">Nueva contraseña</label>
+                    <input class="campo__control" id="nueva" name="nueva" type="password"
+                           autocomplete="new-password" required minlength="12" maxlength="72"
+                           th:classappend="${#fields.hasErrors('nueva')} ? 'campo__control--error'"
+                           th:attr="aria-describedby=${#fields.hasErrors('nueva')} ? 'nueva-error'">
+                    <p class="campo__error" id="nueva-error" th:if="${#fields.hasErrors('nueva')}"
+                       th:errors="*{nueva}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="repetida">Repite la nueva contraseña</label>
+                    <input class="campo__control" id="repetida" name="repetida" type="password"
+                           autocomplete="new-password" required maxlength="72"
+                           th:classappend="${#fields.hasErrors('repetida') or #fields.hasErrors('coinciden')} ? 'campo__control--error'"
+                           th:attr="aria-describedby=${#fields.hasErrors('repetida') or #fields.hasErrors('coinciden')} ? 'repetida-error'">
+                    <p class="campo__error" id="repetida-error"
+                       th:if="${#fields.hasErrors('repetida') or #fields.hasErrors('coinciden')}">
+                        <th:block th:if="${#fields.hasErrors('repetida')}" th:errors="*{repetida}">Error</th:block>
+                        <th:block th:unless="${#fields.hasErrors('repetida')}" th:errors="*{coinciden}">Error</th:block>
+                    </p>
+                </div>
+                <button class="boton boton--amarillo formulario__boton" type="submit">Guardar contraseña</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
