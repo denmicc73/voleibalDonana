@@ -19,8 +19,8 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
  * Seguridad de la web.
  *
  * - La parte pública es libre; el panel (/admin/**) exige iniciar sesión.
- * - Roles: ADMIN entra en todo; EDITOR solo en partidos y resultados (no en usuarios, temporadas
- *   ni inscripciones, que tienen datos de menores).
+ * - Roles: ADMIN entra en todo; EDITOR solo en la portada del panel, "Mi cuenta" y partidos.
+ *   Cualquier ruta nueva del panel es solo ADMIN salvo que se añada a la lista del EDITOR.
  * - Login propio en /admin/login (usuarios en BD, ver UsuarioDetailsService) y logout por POST.
  * - Bloqueo temporal tras varios intentos fallidos (ver IntentosAccesoService).
  * - CSRF siempre activo. Cabeceras: CSP, Referrer-Policy, Permissions-Policy y noindex en el panel.
@@ -44,9 +44,10 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(LOGIN).permitAll()
-                        .requestMatchers("/admin/usuarios/**", "/admin/inscripciones/**", "/admin/temporadas/**")
-                        .hasRole("ADMIN")
-                        .requestMatchers("/admin", "/admin/**").hasAnyRole("ADMIN", "EDITOR")
+                        // EDITOR solo lo que necesita; todo lo demás del panel, solo ADMIN (denegado por defecto)
+                        .requestMatchers("/admin", "/admin/cuenta/**", "/admin/partidos/**")
+                        .hasAnyRole("ADMIN", "EDITOR")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage(LOGIN)
