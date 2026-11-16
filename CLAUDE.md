@@ -44,7 +44,8 @@ Objetivos de la v1:
 - Credenciales solo por variables de entorno (.env.example sin valores).
 - CSRF siempre activo.
 - Datos de menores con consentimiento del tutor y acceso solo ADMIN.
-- Panel: roles ADMIN (todo) y EDITOR (solo partidos y resultados; nunca temporadas, inscripciones ni usuarios). Las rutas nuevas de datos personales van bajo `/admin/inscripciones/**` o se añaden a la regla de ADMIN en `SecurityConfig`.
+- Panel: roles ADMIN (todo) y EDITOR (solo `/admin`, `/admin/cuenta` y `/admin/partidos`). En `SecurityConfig` el resto de `/admin/**` es solo ADMIN por defecto: una ruta nueva no se abre al EDITOR salvo que se añada a su lista.
+- Archivos subidos (logos): en la BD, no en disco (el disco del hosting se borra al desplegar). Solo PNG/JPG/WebP comprobados por contenido; nunca SVG.
 
 ## Flujo de agentes
 1. agente-arquitectura (planificar)
