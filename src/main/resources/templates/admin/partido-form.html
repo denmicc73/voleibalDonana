@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Partido · Panel · Almonte Doñana', 'Datos de un partido.')}">
+    <title>Partido · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('partidos')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/partidos}">&larr; Partidos</a></p>
+        <h1 class="titular panel__titulo" th:text="${partido == null} ? 'Añadir partido' : 'Editar partido'">Añadir partido</h1>
+        <p class="panel__entradilla" th:if="${partido != null and partido.finalizado()}">
+            Este partido ya tiene resultado (<span th:text="${partido.tanteo}">3 – 1</span>). Puedes corregir sus datos:
+            el resultado se mantiene.</p>
+
+        <form class="panel-formulario" method="post" novalidate th:object="${form}"
+              th:action="${partido == null} ? @{/admin/partidos} : @{/admin/partidos/{id}(id=${partido.id})}">
+            <div class="formulario__campos">
+                <div class="formulario__fila">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="categoriaId">Categoría</label>
+                        <select class="campo__control" th:field="*{categoriaId}" required th:errorclass="campo__control--error">
+                            <option value="">Elige categoría</option>
+                            <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}">Cadete</option>
+                        </select>
+                        <p class="campo__error" th:if="${#fields.hasErrors('categoriaId')}" th:errors="*{categoriaId}">Error</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="genero">Equipo</label>
+                        <select class="campo__control" th:field="*{genero}" required th:errorclass="campo__control--error">
+                            <option value="">Elige equipo</option>
+                            <option th:each="g : ${generos}" th:value="${g}" th:text="${g.descripcion}">Femenino</option>
+                        </select>
+                        <p class="campo__error" th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}">Error</p>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label class="campo__etiqueta" for="rival">Rival</label>
+                    <input class="campo__control" type="text" th:field="*{rival}" required maxlength="100"
+                           placeholder="Nombre del club rival" th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('rival')}" th:errors="*{rival}">Error</p>
+                </div>
+
+                <fieldset class="campo campo__grupo">
+                    <legend class="campo__etiqueta">¿Dónde se juega?</legend>
+                    <div class="campo__opciones">
+                        <label class="opcion"><input type="radio" th:field="*{enCasa}" value="true"> En casa</label>
+                        <label class="opcion"><input type="radio" th:field="*{enCasa}" value="false"> Fuera</label>
+                    </div>
+                    <p class="campo__error" th:if="${#fields.hasErrors('enCasa')}" th:errors="*{enCasa}">Error</p>
+                </fieldset>
+
+                <div class="formulario__fila">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="fecha">Fecha</label>
+                        <input class="campo__control" type="date" th:field="*{fecha}" required
+                               th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}">Error</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="hora">Hora</label>
+                        <input class="campo__control" type="time" th:field="*{hora}" required
+                               th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('hora')}" th:errors="*{hora}">Error</p>
+                    </div>
+                </div>
+
+                <div class="formulario__fila">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="lugar">Pabellón (opcional)</label>
+                        <input class="campo__control" type="text" th:field="*{lugar}" maxlength="150"
+                               placeholder="Pabellón Municipal de Almonte" th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('lugar')}" th:errors="*{lugar}">Error</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="jornada">Jornada (opcional)</label>
+                        <input class="campo__control" type="text" th:field="*{jornada}" maxlength="30"
+                               placeholder="J08" th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('jornada')}" th:errors="*{jornada}">Error</p>
+                    </div>
+                </div>
+
+                <div class="campo" th:unless="${partido != null and partido.finalizado()}">
+                    <label class="campo__etiqueta" for="estado">Estado</label>
+                    <select class="campo__control" th:field="*{estado}">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e.descripcion}">Programado</option>
+                    </select>
+                    <p class="campo__ayuda">El resultado se mete aparte, con el botón "Resultado" de la lista.</p>
+                </div>
+
+                <button class="boton boton--amarillo formulario__boton" type="submit">Guardar partido</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

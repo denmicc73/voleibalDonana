@@ -14,10 +14,15 @@
         <p class="panel__entradilla">Desde aquí el club mantiene al día la web.</p>
 
         <ul class="panel-tarjetas">
-            <li class="panel-tarjeta panel-tarjeta--pendiente">
-                <h2 class="titular panel-tarjeta__titulo">Resultados y calendario</h2>
-                <p class="panel-tarjeta__texto">Partidos, resultados set a set y próximos encuentros.</p>
-                <p class="etiqueta etiqueta--apagada">Próximamente</p>
+            <li class="panel-tarjeta">
+                <h2 class="titular panel-tarjeta__titulo">Partidos</h2>
+                <p class="panel-tarjeta__texto">Calendario y resultados set a set de todos los equipos.</p>
+                <a class="boton boton--amarillo" th:href="@{/admin/partidos}">Ir a partidos &rarr;</a>
+            </li>
+            <li class="panel-tarjeta" th:if="${usuarioActual != null and usuarioActual.admin}">
+                <h2 class="titular panel-tarjeta__titulo">Temporadas</h2>
+                <p class="panel-tarjeta__texto">Temporada activa y categorías: años de nacimiento y horarios.</p>
+                <a class="boton boton--amarillo" th:href="@{/admin/temporadas}">Ir a temporadas &rarr;</a>
             </li>
             <li class="panel-tarjeta panel-tarjeta--pendiente"
                 th:if="${usuarioActual != null and usuarioActual.admin}">

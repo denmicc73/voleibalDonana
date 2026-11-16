@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Borrar partido · Panel · Almonte Doñana', 'Confirmar borrado de un partido.')}">
+    <title>Borrar partido · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('partidos')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/partidos(categoria=${partido.categoriaId})}">&larr; Partidos</a></p>
+        <h1 class="titular panel__titulo">¿Borrar este partido?</h1>
+        <div class="panel-formulario">
+            <p><strong th:text="${partido.local + ' — ' + partido.visitante}">Almonte Doñana — CD Rival</strong></p>
+            <p class="campo__ayuda"
+               th:text="${partido.equipo() + ' · ' + #temporals.format(partido.fechaHora, 'dd/MM/yyyy') + ' · ' + partido.hora + ' h'}">
+                Cadete Fem. · 08/11/2026 · 12:00 h</p>
+            <p class="campo__ayuda" th:if="${partido.finalizado()}">
+                Se borrará también su resultado (<span th:text="${partido.tanteo}">3 – 1</span>). No se puede deshacer.</p>
+            <div class="panel__botones">
+                <form method="post" th:action="@{/admin/partidos/{id}/borrar(id=${partido.id})}">
+                    <button class="boton boton--peligro" type="submit">Sí, borrar</button>
+                </form>
+                <a class="boton boton--contorno" th:href="@{/admin/partidos(categoria=${partido.categoriaId})}">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

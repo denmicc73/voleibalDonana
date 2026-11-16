@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Temporadas · Panel · Almonte Doñana', 'Temporadas del club.')}">
+    <title>Temporadas · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('temporadas')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <h1 class="titular panel__titulo">Temporadas</h1>
+        <p class="panel__entradilla">La temporada activa es la que se ve en la web: equipos, calendario y resultados.
+            Al empezar una nueva, créala copiando las categorías, ajusta los años de nacimiento y actívala.</p>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla tabla--compacta">
+                <caption class="visualmente-oculto">Temporadas</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Temporada</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col"><span class="visualmente-oculto">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${temporadas}">
+                    <td th:text="${t.nombre}">2026/27</td>
+                    <td>
+                        <span class="etiqueta etiqueta--ok" th:if="${t.activa}">Activa · se ve en la web</span>
+                        <span class="etiqueta etiqueta--apagada" th:unless="${t.activa}">Inactiva</span>
+                    </td>
+                    <td>
+                        <div class="tabla__botones">
+                            <a class="boton boton--contorno boton--pequeno"
+                               th:href="@{/admin/temporadas/{id}/categorias(id=${t.id})}">Categorías</a>
+                            <form th:unless="${t.activa}" th:action="@{/admin/temporadas/{id}/activar(id=${t.id})}" method="post">
+                                <button class="boton boton--amarillo boton--pequeno" type="submit">Activar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <form class="panel-formulario panel__estrecho" th:action="@{/admin/temporadas}" th:object="${form}" method="post" novalidate>
+            <h2 class="titular panel-formulario__titulo">Nueva temporada</h2>
+            <div class="formulario__campos">
+                <div class="campo">
+                    <label class="campo__etiqueta" for="nombre">Temporada</label>
+                    <input class="campo__control" type="text" th:field="*{nombre}" required placeholder="2027/28"
+                           maxlength="7" pattern="\d{4}/\d{2}" th:errorclass="campo__control--error"
+                           th:attr="aria-describedby=${#fields.hasErrors('nombre')} ? 'nombre-error'">
+                    <p class="campo__error" id="nombre-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</p>
+                </div>
+                <div class="casilla">
+                    <input type="checkbox" th:field="*{copiarCategorias}">
+                    <label th:for="${#ids.prev('copiarCategorias')}">Copiar las categorías de la temporada activa</label>
+                </div>
+                <button class="boton boton--amarillo formulario__boton" type="submit">Crear temporada</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

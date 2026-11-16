@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Partidos · Panel · Almonte Doñana', 'Partidos y resultados.')}">
+    <title>Partidos · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('partidos')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <div class="panel__cabecera">
+            <div>
+                <h1 class="titular panel__titulo">Partidos</h1>
+                <p class="panel__entradilla" th:if="${temporada != null}">
+                    Temporada <strong th:text="${temporada.nombre}">2026/27</strong>. Lo que guardes aquí se ve al
+                    momento en la web.</p>
+            </div>
+            <a class="boton boton--amarillo" th:if="${temporada != null}" th:href="@{/admin/partidos/nuevo}">Añadir partido &rarr;</a>
+        </div>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <p class="aviso aviso--error" th:if="${temporada == null}">
+            No hay ninguna temporada activa.
+            <th:block th:if="${usuarioActual != null and usuarioActual.admin}">
+                Créala o actívala en <a th:href="@{/admin/temporadas}">Temporadas</a>.</th:block>
+            <th:block th:unless="${usuarioActual != null and usuarioActual.admin}">
+                Pide a la administración del club que active una.</th:block>
+        </p>
+
+        <th:block th:if="${temporada != null}">
+            <form class="filtro" th:action="@{/admin/partidos}" method="get">
+                <label class="campo__etiqueta" for="categoria">Categoría</label>
+                <select class="campo__control filtro__control" id="categoria" name="categoria">
+                    <option value="">Todas</option>
+                    <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"
+                            th:selected="${c.id == categoriaSeleccionada}">Cadete</option>
+                </select>
+                <button class="boton boton--contorno boton--pequeno" type="submit">Filtrar</button>
+            </form>
+
+            <p class="panel__vacio" th:if="${#lists.isEmpty(partidos)}">No hay partidos todavía.</p>
+
+            <div class="tabla-contenedor" th:unless="${#lists.isEmpty(partidos)}">
+                <table class="tabla">
+                    <caption class="visualmente-oculto">Partidos de la temporada</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Equipo</th>
+                        <th scope="col">Partido</th>
+                        <th scope="col">Resultado</th>
+                        <th scope="col"><span class="visualmente-oculto">Acciones</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${partidos}" th:id="${'partido-' + p.id}">
+                        <td>
+                            <span th:text="${#temporals.format(p.fechaHora, 'dd/MM/yyyy')}">08/11/2026</span>
+                            <span class="tabla__secundario" th:text="${p.hora + ' h'}">12:00 h</span>
+                        </td>
+                        <td>
+                            <span th:text="${p.categoria}">Cadete</span>
+                            <span class="tabla__secundario" th:text="${p.genero.descripcion}">Femenino</span>
+                        </td>
+                        <td>
+                            <span th:text="${p.local + ' — ' + p.visitante}">Almonte Doñana — CD Rival</span>
+                            <span class="tabla__secundario"
+                                  th:text="${(p.jornada != null ? p.jornada + ' · ' : '') + (p.lugar != null ? p.lugar : (p.enCasa ? 'En casa' : 'Fuera'))}">J08 · Pabellón</span>
+                        </td>
+                        <td>
+                            <th:block th:if="${p.finalizado()}">
+                                <strong th:text="${p.tanteo}">3 – 1</strong>
+                                <span class="etiqueta" th:classappend="${p.victoria} ? 'etiqueta--ok' : 'etiqueta--apagada'"
+                                      th:text="${p.victoria} ? 'Victoria' : 'Derrota'">Victoria</span>
+                                <span class="tabla__secundario" th:text="${p.setsTexto()}">25-20 · 23-25</span>
+                            </th:block>
+                            <span class="etiqueta etiqueta--apagada" th:unless="${p.finalizado()}"
+                                  th:classappend="${p.estado.name() != 'PROGRAMADO'} ? 'etiqueta--aviso'"
+                                  th:text="${p.estado.descripcion}">Programado</span>
+                        </td>
+                        <td>
+                            <div class="tabla__botones">
+                                <a class="boton boton--amarillo boton--pequeno"
+                                   th:href="@{/admin/partidos/{id}/resultado(id=${p.id})}"
+                                   th:text="${p.finalizado()} ? 'Cambiar resultado' : 'Resultado'">Resultado</a>
+                                <a class="boton boton--contorno boton--pequeno"
+                                   th:href="@{/admin/partidos/{id}/editar(id=${p.id})}">Editar</a>
+                                <a class="boton boton--contorno boton--pequeno"
+                                   th:href="@{/admin/partidos/{id}/borrar(id=${p.id})}">Borrar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+</main>
+</body>
+</html>

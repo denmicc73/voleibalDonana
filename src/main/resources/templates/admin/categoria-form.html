@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Categoría · Panel · Almonte Doñana', 'Datos de una categoría.')}">
+    <title>Categoría · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('temporadas')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/temporadas/{id}/categorias(id=${temporada.id})}">&larr; Categorías</a></p>
+        <h1 class="titular panel__titulo">
+            <th:block th:text="${categoriaId == null} ? 'Añadir categoría' : 'Editar categoría'">Añadir categoría</th:block>
+            <span th:text="${temporada.nombre}">2026/27</span>
+        </h1>
+
+        <form class="panel-formulario" method="post" novalidate th:object="${form}"
+              th:action="${categoriaId == null} ? @{/admin/temporadas/{id}/categorias(id=${temporada.id})} : @{/admin/temporadas/categorias/{id}(id=${categoriaId})}">
+            <div class="formulario__campos">
+                <div class="campo">
+                    <label class="campo__etiqueta" for="nombre">Nombre</label>
+                    <input class="campo__control" type="text" th:field="*{nombre}" required maxlength="50"
+                           placeholder="Cadete" th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="descripcionEdad">Edad (texto)</label>
+                    <input class="campo__control" type="text" th:field="*{descripcionEdad}" maxlength="50"
+                           placeholder="14–15 años" th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('descripcionEdad')}" th:errors="*{descripcionEdad}">Error</p>
+                </div>
+                <div class="formulario__fila">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="anioDesde">Nacidos desde (año)</label>
+                        <input class="campo__control" type="number" min="1900" max="2100" th:field="*{anioDesde}"
+                               th:errorclass="campo__control--error">
+                        <p class="campo__ayuda">Vacío = "y antes" (sénior).</p>
+                        <p class="campo__error" th:if="${#fields.hasErrors('anioDesde')}" th:errors="*{anioDesde}">Error</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="anioHasta">Hasta (año)</label>
+                        <input class="campo__control" type="number" min="1900" max="2100" th:field="*{anioHasta}"
+                               th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('anioHasta')}" th:errors="*{anioHasta}">Error</p>
+                    </div>
+                </div>
+                <p class="campo__error" th:if="${#fields.hasErrors('aniosEnOrden')}" th:errors="*{aniosEnOrden}">Error</p>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="horario">Horario de entrenamiento</label>
+                    <input class="campo__control" type="text" th:field="*{horario}" maxlength="100"
+                           placeholder="Lun. y mié. · 18:00 h" th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('horario')}" th:errors="*{horario}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="orden">Orden en la web</label>
+                    <input class="campo__control" type="number" min="0" max="99" th:field="*{orden}"
+                           th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('orden')}" th:errors="*{orden}">Error</p>
+                </div>
+                <div class="casilla">
+                    <input type="checkbox" th:field="*{visible}">
+                    <label th:for="${#ids.prev('visible')}">Mostrar en la web</label>
+                </div>
+                <button class="boton boton--amarillo formulario__boton" type="submit">Guardar categoría</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
