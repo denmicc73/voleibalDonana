@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Categorías · Panel · Almonte Doñana', 'Categorías de una temporada.')}">
+    <title>Categorías · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('temporadas')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <p><a class="panel__volver" th:href="@{/admin/temporadas}">&larr; Temporadas</a></p>
+        <div class="panel__cabecera">
+            <div>
+                <h1 class="titular panel__titulo">Categorías <span th:text="${temporada.nombre}">2026/27</span></h1>
+                <p class="panel__entradilla">Se muestran en la web en este orden. Las ocultas no salen en la portada.
+                    <th:block th:unless="${temporada.activa}">Esta temporada aún no está activa.</th:block></p>
+            </div>
+            <a class="boton boton--amarillo" th:href="@{/admin/temporadas/{id}/categorias/nueva(id=${temporada.id})}">Añadir categoría &rarr;</a>
+        </div>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <p class="panel__vacio" th:if="${#lists.isEmpty(categorias)}">Esta temporada no tiene categorías.</p>
+
+        <div class="tabla-contenedor" th:unless="${#lists.isEmpty(categorias)}">
+            <table class="tabla">
+                <caption class="visualmente-oculto">Categorías de la temporada</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Orden</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Horario</th>
+                    <th scope="col">En la web</th>
+                    <th scope="col"><span class="visualmente-oculto">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${categorias}">
+                    <td th:text="${c.orden}">1</td>
+                    <td th:text="${c.nombre}">Cadete</td>
+                    <td>
+                        <span th:text="${c.descripcionEdad != null} ? ${c.descripcionEdad} : '—'">14–15 años</span>
+                        <span class="tabla__secundario" th:if="${c.nacidos != null}" th:text="${c.nacidos}">Nacidos en 2011 y 2012</span>
+                    </td>
+                    <td th:text="${c.horario != null} ? ${c.horario} : 'Por confirmar'">Lun. y mié. · 18:00 h</td>
+                    <td>
+                        <span class="etiqueta etiqueta--ok" th:if="${c.visible}">Visible</span>
+                        <span class="etiqueta etiqueta--apagada" th:unless="${c.visible}">Oculta</span>
+                    </td>
+                    <td>
+                        <div class="tabla__botones">
+                            <a class="boton boton--contorno boton--pequeno"
+                               th:href="@{/admin/temporadas/categorias/{id}/editar(id=${c.id})}">Editar</a>
+                            <form th:action="@{/admin/temporadas/categorias/{id}/borrar(id=${c.id})}" method="post">
+                                <button class="boton boton--contorno boton--pequeno" type="submit">Borrar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="campo__ayuda panel__nota">Solo se pueden borrar categorías sin partidos; si tiene partidos, ocúltala.</p>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Resultado · Panel · Almonte Doñana', 'Resultado set a set.')}">
+    <title>Resultado · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('partidos')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/partidos(categoria=${partido.categoriaId})}">&larr; Partidos</a></p>
+        <h1 class="titular panel__titulo">Resultado</h1>
+        <p class="panel__entradilla">
+            <strong th:text="${partido.local + ' — ' + partido.visitante}">Almonte Doñana — CD Rival</strong><br>
+            <span th:text="${partido.equipo() + ' · ' + #temporals.format(partido.fechaHora, 'dd/MM/yyyy') + ' · ' + partido.hora + ' h'}">Cadete Fem. · 08/11/2026 · 12:00 h</span>
+        </p>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <div class="aviso aviso--error" role="alert" th:if="${erroresResultado != null}">
+            <p>No se ha guardado el resultado:</p>
+            <ul class="aviso__lista">
+                <li th:each="e : ${erroresResultado}" th:text="${e}">Set 2: un set no puede acabar en empate.</li>
+            </ul>
+        </div>
+
+        <form class="panel-formulario" method="post" th:object="${form}"
+              th:action="@{/admin/partidos/{id}/resultado(id=${partido.id})}">
+            <p class="campo__ayuda">Puntos de cada set. Deja vacías las filas de los sets que no se jugaron.</p>
+            <table class="tabla-sets">
+                <caption class="visualmente-oculto">Puntos por set</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Set</th>
+                    <th scope="col">Almonte Doñana</th>
+                    <th scope="col" th:text="${partido.enCasa} ? ${partido.visitante} : ${partido.local}">CD Rival</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="fila, i : *{sets}">
+                    <th scope="row" th:text="${i.count}">1</th>
+                    <td>
+                        <label class="visualmente-oculto" th:for="${'sets' + i.index + '.club'}"
+                               th:text="${'Set ' + i.count + ', puntos de Almonte Doñana'}">Set 1, puntos de Almonte Doñana</label>
+                        <input class="campo__control tabla-sets__control" type="number" min="0" max="60"
+                               inputmode="numeric" th:field="*{sets[__${i.index}__].club}">
+                    </td>
+                    <td>
+                        <label class="visualmente-oculto" th:for="${'sets' + i.index + '.rival'}"
+                               th:text="${'Set ' + i.count + ', puntos del rival'}">Set 1, puntos del rival</label>
+                        <input class="campo__control tabla-sets__control" type="number" min="0" max="60"
+                               inputmode="numeric" th:field="*{sets[__${i.index}__].rival}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="boton boton--amarillo formulario__boton" type="submit">Guardar resultado</button>
+        </form>
+
+        <form class="panel__accion-secundaria" th:if="${partido.finalizado()}" method="post"
+              th:action="@{/admin/partidos/{id}/resultado/quitar(id=${partido.id})}">
+            <button class="boton boton--contorno boton--pequeno" type="submit">Quitar resultado</button>
+            <span class="campo__ayuda">Vuelve a dejar el partido como programado.</span>
+        </form>
+    </div>
+</main>
+</body>
+</html>

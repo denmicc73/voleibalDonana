@@ -8,9 +8,9 @@
 <div th:replace="~{fragments/header :: cabecera('inicio')}"></div>
 
 <!--
-  Portada (Fase 1). Secciones de la v1 según el diseño de Figma.
+  Portada. Secciones de la v1 según el diseño de Figma.
   Omitidas hasta la v2: Noticias, Galería y Clasificación.
-  Los datos (resultados, partidos, categorías) son DE EJEMPLO: ver DatosEjemploService.
+  Datos de la temporada activa (ver PortadaService): resultados, partidos y categorías visibles.
 -->
 <main id="contenido">
 
@@ -37,9 +37,10 @@
                 <h1 class="titular inicio__titulo" id="titulo-inicio">En equipo. Imparables.</h1>
                 <p class="inicio__subtitulo">La pasión se entrena. El equipo se lleva dentro.</p>
 
-                <article class="marcador" aria-labelledby="titulo-marcador" th:object="${ultimoResultado}">
+                <article class="marcador" aria-labelledby="titulo-marcador"
+                         th:if="${portada.ultimoResultado != null}" th:object="${portada.ultimoResultado}">
                     <h2 class="marcador__meta" id="titulo-marcador">
-                        <span>Último resultado&nbsp; / &nbsp;<span th:text="*{categoria + ' · ' + jornada}">Sénior · J08</span></span>
+                        <span>Último resultado&nbsp; / &nbsp;<span th:text="*{etiqueta}">Sénior Fem. · J08</span></span>
                         <span class="marcador__estado">Final</span>
                     </h2>
                     <p class="marcador__victoria" th:if="*{victoria}">
@@ -50,14 +51,21 @@
                         <span class="marcador__tanteo" th:text="*{tanteo}">3 — 1</span>
                         <span class="marcador__equipo marcador__equipo--visitante" th:text="*{visitante}">CD Rival</span>
                     </p>
+                    <p class="marcador__sets">
+                        <span class="visualmente-oculto">Puntos por set: </span><span th:text="*{sets}">25-20 · 23-25 · 25-18 · 25-22</span>
+                    </p>
                     <p class="marcador__fecha" th:text="*{fecha}">Domingo 08 de noviembre · En casa</p>
                 </article>
 
-                <div class="proximo" th:object="${proximoPartido}">
-                    <h2 class="proximo__etiqueta">Próximo partido</h2>
+                <div class="proximo" th:if="${portada.proximoPartido != null}" th:object="${portada.proximoPartido}">
+                    <h2 class="proximo__etiqueta">Próximo partido · <span th:text="*{equipo}">Sénior Fem.</span></h2>
                     <p class="titular proximo__equipos" th:text="*{local + '  /  ' + visitante}">CD Visitante / Almonte Doñana</p>
                     <p class="proximo__detalle" th:text="*{detalle}">Dom. 15 nov. · 12:00 h · Campo rival</p>
                     <a class="boton boton--amarillo proximo__boton" href="#calendario">Ver calendario &rarr;</a>
+                </div>
+                <div class="proximo" th:if="${portada.ultimoResultado == null and portada.proximoPartido == null}">
+                    <h2 class="proximo__etiqueta">Temporada en preparación</h2>
+                    <p class="proximo__detalle">Muy pronto publicaremos aquí el calendario de partidos.</p>
                 </div>
             </div>
         </div>
@@ -65,7 +73,7 @@
         <p class="rotulador inicio__rotulo">Aquí juega todo el mundo.</p>
     </section>
 
-    <!-- Equipos. Categorías y horarios DE EJEMPLO (categorías oficiales de voleibol en Andalucía) -->
+    <!-- Equipos: categorías visibles de la temporada activa (categorías oficiales de voleibol en Andalucía) -->
     <section class="seccion equipos" id="equipos" aria-labelledby="titulo-equipos">
         <div class="contenedor">
             <p class="antetitulo">El mismo escudo. Todas las etapas.</p>
@@ -73,19 +81,22 @@
             <p class="entradilla">Conoce cada categoría, sus edades y sus horarios de entrenamiento.</p>
 
             <ul class="equipos__lista">
-                <li class="tarjeta-equipo" th:each="categoria, estado : ${categorias}">
+                <li class="tarjeta-equipo" th:each="categoria, estado : ${portada.categorias}">
                     <span class="titular tarjeta-equipo__numero" aria-hidden="true"
                           th:text="${#numbers.formatInteger(estado.count, 2)}">01</span>
                     <div class="tarjeta-equipo__cuerpo">
                         <h3 class="titular tarjeta-equipo__nombre" th:text="${categoria.nombre}">Sénior</h3>
-                        <p class="tarjeta-equipo__edad"
-                           th:text="${categoria.edad + ' · ' + categoria.nacidos}">Primer equipo</p>
-                        <p class="tarjeta-equipo__horario" th:text="${categoria.horario}">Mar. y jue. · 20:30 h</p>
+                        <p class="tarjeta-equipo__edad" th:if="${categoria.edadYNacidos() != null}"
+                           th:text="${categoria.edadYNacidos()}">Primer equipo</p>
+                        <p class="tarjeta-equipo__horario"
+                           th:text="${categoria.horario != null} ? ${categoria.horario} : 'Horario por confirmar'">Mar. y jue. · 20:30 h</p>
                     </div>
                     <span class="tarjeta-equipo__flecha" aria-hidden="true">&rarr;</span>
                 </li>
             </ul>
-            <p class="equipos__nota">Años de nacimiento y horarios orientativos para la temporada 2026/27.</p>
+            <p class="equipos__nota" th:if="${portada.temporada != null}"
+               th:text="${'Equipos femeninos y masculinos. Años de nacimiento y horarios de la ' + #strings.toLowerCase(portada.temporada) + '.'}">
+                Equipos femeninos y masculinos. Años de nacimiento y horarios de la temporada 2026 / 27.</p>
         </div>
     </section>
 
@@ -95,12 +106,12 @@
             <p class="antetitulo">Cada jornada cuenta</p>
             <div class="calendario__cabecera">
                 <h2 class="titular titulo-seccion" id="titulo-calendario">Nos vemos en el campo</h2>
-                <p class="calendario__temporada" th:text="${temporada}">Temporada 2026 / 27</p>
+                <p class="calendario__temporada" th:text="${portada.temporada}">Temporada 2026 / 27</p>
             </div>
 
             <div class="pestanas" role="tablist" aria-label="Categoría">
                 <button class="pestanas__boton" type="button" role="tab"
-                        th:each="bloque, estado : ${calendario}"
+                        th:each="bloque, estado : ${portada.calendario}"
                         th:id="${'pestana-' + bloque.categoria.id}"
                         th:attr="aria-controls=${'panel-' + bloque.categoria.id},aria-selected=${estado.first}"
                         th:tabindex="${estado.first} ? 0 : -1"
@@ -110,22 +121,29 @@
             <div class="calendario__lista">
                 <h3 class="titular calendario__subtitulo">Partidos</h3>
                 <div class="calendario__panel" role="tabpanel" tabindex="0"
-                     th:each="bloque : ${calendario}"
+                     th:each="bloque : ${portada.calendario}"
                      th:id="${'panel-' + bloque.categoria.id}"
                      th:attr="aria-labelledby=${'pestana-' + bloque.categoria.id}">
                     <h4 class="visualmente-oculto" th:text="${'Partidos · ' + bloque.categoria.nombre}">Partidos · Sénior</h4>
-                    <ul class="partidos">
+                    <ul class="partidos" th:unless="${#lists.isEmpty(bloque.partidos)}">
                         <li class="partido" th:each="partido : ${bloque.partidos}">
-                            <span class="partido__fecha" th:text="${partido.fecha}">08 nov</span>
-                            <span class="partido__equipos" th:text="${partido.local + ' — ' + partido.visitante}">Almonte Doñana — CD Rival</span>
+                            <span class="partido__fecha" th:text="${partido.diaMes}">08 nov</span>
+                            <span class="partido__equipos">
+                                <span th:text="${partido.local + ' — ' + partido.visitante}">Almonte Doñana — CD Rival</span>
+                                <span class="partido__equipo" th:text="${partido.genero.descripcion}">Femenino</span>
+                                <span class="partido__sets" th:if="${partido.finalizado()}" th:text="${partido.setsTexto()}">25-20 · 23-25 · 25-18 · 25-22</span>
+                            </span>
                             <span class="titular partido__marcador"
-                                  th:text="${partido.jugado()} ? ${partido.tanteo} : ${partido.hora}">3 – 1</span>
-                            <span class="partido__estado" th:text="${partido.estado}">Final</span>
+                                  th:text="${partido.finalizado()} ? ${partido.tanteo} : ${partido.hora}">3 – 1</span>
+                            <span class="partido__estado" th:text="${partido.estadoTexto()}">Final</span>
                         </li>
                     </ul>
+                    <p class="calendario__vacio" th:if="${#lists.isEmpty(bloque.partidos)}">
+                        Todavía no hay partidos publicados en esta categoría.</p>
                 </div>
             </div>
-            <p class="calendario__nota">Calendario de ejemplo: los partidos reales se publicarán desde el panel del club.</p>
+            <p class="calendario__nota" th:if="${#lists.isEmpty(portada.calendario)}">
+                El calendario de la temporada se publicará muy pronto.</p>
         </div>
     </section>
 
@@ -172,14 +190,14 @@
                             <label class="campo__etiqueta" for="anioNacimiento">Año de nacimiento</label>
                             <select class="campo__control" id="anioNacimiento" name="anioNacimiento" required>
                                 <option value="">Selecciona el año</option>
-                                <option th:each="anio : ${aniosNacimiento}" th:value="${anio}" th:text="${anio}">2014</option>
+                                <option th:each="anio : ${portada.aniosNacimiento}" th:value="${anio}" th:text="${anio}">2014</option>
                             </select>
                         </div>
                         <div class="campo">
                             <label class="campo__etiqueta" for="categoria">Categoría de interés</label>
                             <select class="campo__control" id="categoria" name="categoria" required>
                                 <option value="">Selecciona categoría</option>
-                                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                <option th:each="categoria : ${portada.categorias}" th:value="${categoria.id}"
                                         th:text="${categoria.nombre}">Infantil</option>
                                 <option value="no-se">No lo sé</option>
                             </select>

@@ -591,6 +591,14 @@ select {
     grid-area: visitante;
 }
 
+.marcador__sets {
+    margin-top: 10px;
+    font-size: 0.8125rem;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
 .marcador__fecha {
     margin-top: 12px;
     font-size: 0.625rem;
@@ -985,7 +993,33 @@ select {
 
 .partido__equipos {
     grid-area: equipos;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
     font-size: 0.875rem;
+}
+
+/* Equipo del club que juega (femenino / masculino / mixto) */
+.partido__equipo {
+    font-size: 0.6875rem;
+    color: var(--amarillo);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Puntos set a set */
+.partido__sets {
+    flex-basis: 100%;
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+}
+
+.calendario__vacio {
+    padding-block: var(--espacio-s);
+    font-size: 0.875rem;
+    color: var(--texto-suave);
 }
 
 .partido__marcador {
@@ -1809,7 +1843,7 @@ select.campo__control {
 
 @media (min-width: 1024px) {
     .panel-tarjetas {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -1870,4 +1904,133 @@ select.campo__control {
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px;
+}
+
+/* Panel: filtros, listas y formularios de partidos y temporadas */
+.filtro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: var(--espacio-m);
+}
+
+.filtro__control {
+    width: auto;
+    min-width: 200px;
+    min-height: 36px;
+    padding-block: 6px;
+    background-color: var(--blanco);
+}
+
+.tabla__secundario {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.75rem;
+    color: var(--texto-gris);
+}
+
+.tabla--compacta {
+    min-width: 480px;
+}
+
+.panel__vacio,
+.panel__nota {
+    margin-top: var(--espacio-m);
+    color: var(--texto-gris);
+}
+
+.panel__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: var(--espacio-m);
+}
+
+.panel__accion-secundaria {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: var(--espacio-m);
+}
+
+.boton--peligro {
+    background: var(--rojo-error);
+    color: var(--blanco);
+}
+
+.boton--peligro:hover {
+    background: #8c1d17;
+}
+
+.aviso__lista {
+    margin-top: 6px;
+    padding-left: 20px;
+}
+
+.campo__grupo {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.campo__opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+}
+
+.opcion {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    font-size: 0.875rem;
+    color: var(--azul-marino);
+    cursor: pointer;
+}
+
+.opcion input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--azul-marino);
+}
+
+.panel-formulario .casilla {
+    font-size: 0.8125rem;
+    color: var(--azul-marino);
+}
+
+/* Resultado set a set */
+.tabla-sets {
+    width: 100%;
+    margin-block: var(--espacio-s) var(--espacio-m);
+    border-collapse: collapse;
+}
+
+.tabla-sets th,
+.tabla-sets td {
+    padding: 6px 4px;
+    text-align: left;
+}
+
+.tabla-sets thead th {
+    font-size: 0.75rem;
+    color: var(--texto-gris);
+}
+
+.tabla-sets tbody th {
+    width: 48px;
+    font-family: var(--fuente-titular);
+    font-style: italic;
+    font-size: 1.4rem;
+}
+
+.tabla-sets__control {
+    max-width: 120px;
+    font-size: 1rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
 }
