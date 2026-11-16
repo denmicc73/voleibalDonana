@@ -4,7 +4,7 @@
 <!--
   Cabecera del panel de administración. Uso:
   <div th:replace="~{fragments/admin :: cabecera('inicio')}"></div>
-  "activo" marca con aria-current el enlace de la página actual: inicio, partidos, temporadas, usuarios o cuenta.
+  "activo" marca con aria-current el enlace de la página actual: inicio, partidos, temporadas, patrocinio, usuarios o cuenta.
   Necesita en el modelo "usuarioActual" (lo añade PanelModelAdvice).
 -->
 <th:block th:fragment="cabecera(activo)">
@@ -27,6 +27,9 @@
                     <li th:if="${usuarioActual != null and usuarioActual.admin}">
                         <a class="panel-menu__enlace" th:href="@{/admin/temporadas}"
                            th:attr="aria-current=${activo == 'temporadas'} ? 'page'">Temporadas</a></li>
+                    <li th:if="${usuarioActual != null and usuarioActual.admin}">
+                        <a class="panel-menu__enlace" th:href="@{/admin/patrocinadores}"
+                           th:attr="aria-current=${activo == 'patrocinio'} ? 'page'">Patrocinio</a></li>
                     <li th:if="${usuarioActual != null and usuarioActual.admin}">
                         <a class="panel-menu__enlace" th:href="@{/admin/usuarios}"
                            th:attr="aria-current=${activo == 'usuarios'} ? 'page'">Usuarios</a></li>

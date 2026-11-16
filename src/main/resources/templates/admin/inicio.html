@@ -24,6 +24,14 @@
                 <p class="panel-tarjeta__texto">Temporada activa y categorías: años de nacimiento y horarios.</p>
                 <a class="boton boton--amarillo" th:href="@{/admin/temporadas}">Ir a temporadas &rarr;</a>
             </li>
+            <li class="panel-tarjeta" th:if="${usuarioActual != null and usuarioActual.admin}">
+                <h2 class="titular panel-tarjeta__titulo">Patrocinio</h2>
+                <p class="panel-tarjeta__texto">Patrocinadores de la portada y solicitudes de empresas.</p>
+                <p class="etiqueta etiqueta--aviso" th:if="${solicitudesPendientes > 0}"
+                   th:text="${solicitudesPendientes == 1} ? '1 solicitud pendiente' : ${solicitudesPendientes + ' solicitudes pendientes'}">
+                    2 solicitudes pendientes</p>
+                <a class="boton boton--amarillo" th:href="@{/admin/patrocinadores}">Ir a patrocinio &rarr;</a>
+            </li>
             <li class="panel-tarjeta panel-tarjeta--pendiente"
                 th:if="${usuarioActual != null and usuarioActual.admin}">
                 <h2 class="titular panel-tarjeta__titulo">Inscripciones</h2>

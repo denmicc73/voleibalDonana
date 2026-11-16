@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Solicitudes de patrocinio · Panel · Almonte Doñana', 'Solicitudes de patrocinio.')}">
+    <title>Solicitudes de patrocinio · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('patrocinio')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <p><a class="panel__volver" th:href="@{/admin/patrocinadores}">&larr; Patrocinadores</a></p>
+        <h1 class="titular panel__titulo">Solicitudes de patrocinio</h1>
+        <p class="panel__entradilla">Llegan desde la página "Patrocina al club". Contacta y márcalas como atendidas.
+            Borra las que ya no necesites: son datos personales.</p>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <p class="panel__vacio" th:if="${#lists.isEmpty(solicitudes)}">No hay solicitudes.</p>
+
+        <ul class="solicitudes" th:unless="${#lists.isEmpty(solicitudes)}">
+            <li class="solicitud" th:each="s : ${solicitudes}" th:classappend="${s.atendida} ? 'solicitud--atendida'">
+                <div class="solicitud__cabecera">
+                    <h2 class="titular solicitud__empresa" th:text="${s.empresa}">Empresa</h2>
+                    <span class="etiqueta etiqueta--aviso" th:unless="${s.atendida}">Pendiente</span>
+                    <span class="etiqueta etiqueta--apagada" th:if="${s.atendida}">Atendida</span>
+                </div>
+                <p class="solicitud__datos">
+                    <span th:text="${s.contacto}">Nombre</span> ·
+                    <a th:href="${'mailto:' + s.email}" th:text="${s.email}">email</a>
+                    <th:block th:if="${s.telefono != null}"> · <a th:href="${'tel:' + s.telefono}" th:text="${s.telefono}">600 000 000</a></th:block>
+                </p>
+                <p class="solicitud__mensaje" th:if="${s.mensaje != null}" th:text="${s.mensaje}">Mensaje</p>
+                <p class="tabla__secundario" th:text="${'Recibida el ' + #temporals.format(s.recibida, 'dd/MM/yyyy HH:mm')}">Recibida</p>
+                <div class="tabla__botones solicitud__botones">
+                    <form th:unless="${s.atendida}" th:action="@{/admin/solicitudes-patrocinio/{id}/atendida(id=${s.id})}" method="post">
+                        <button class="boton boton--amarillo boton--pequeno" type="submit">Marcar atendida</button>
+                    </form>
+                    <form th:if="${s.atendida}" th:action="@{/admin/solicitudes-patrocinio/{id}/pendiente(id=${s.id})}" method="post">
+                        <button class="boton boton--contorno boton--pequeno" type="submit">Volver a pendiente</button>
+                    </form>
+                    <form th:action="@{/admin/solicitudes-patrocinio/{id}/borrar(id=${s.id})}" method="post">
+                        <button class="boton boton--contorno boton--pequeno" type="submit">Borrar</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

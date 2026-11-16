@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Patrocina al club · Almonte Doñana',
+        'Apoya al club de voleibol Almonte Doñana: tu empresa o comercio junto a nuestros equipos femeninos y masculinos y la cantera de Almonte.')}">
+    <title>Patrocina al club · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('patrocinio')}"></div>
+
+<main id="contenido">
+    <section class="seccion seccion--clara patrocina" aria-labelledby="titulo-patrocina">
+        <div class="contenedor patrocina__rejilla">
+            <div class="patrocina__texto">
+                <p class="antetitulo antetitulo--gris">El equipo también se construye fuera del campo</p>
+                <h1 class="titular titulo-seccion" id="titulo-patrocina">Patrocina al club</h1>
+                <p class="patrocina__entradilla">Con tu apoyo, más chicas y chicos de Almonte pueden jugar, competir y
+                    crecer con el voleibol. A cambio, tu empresa o comercio estará junto a nuestros equipos.</p>
+                <ul class="patrocina__ventajas">
+                    <li><strong>Visibilidad</strong> en esta web, con tu logo y un enlace a la tuya.</li>
+                    <li><strong>Presencia</strong> en partidos, pabellón y redes del club.</li>
+                    <li><strong>Compromiso local</strong>: apoyas el deporte base del pueblo.</li>
+                </ul>
+                <p class="patrocina__entradilla">Te contamos las opciones sin compromiso y buscamos la que mejor encaje
+                    contigo, sea cual sea el tamaño de tu negocio.</p>
+                <p class="rotulador patrocina__rotulo">Juntos, más lejos.</p>
+            </div>
+
+            <form class="formulario" th:action="@{/patrocina}" th:object="${form}" method="post" novalidate
+                  aria-labelledby="titulo-formulario-patrocinio">
+                <h2 class="titular formulario__titulo" id="titulo-formulario-patrocinio">Hablemos</h2>
+                <p class="formulario__entradilla">Déjanos tus datos y el club se pondrá en contacto contigo.</p>
+
+                <p class="aviso aviso--error" role="alert" th:if="${error != null}" th:text="${error}">Error</p>
+                <p class="aviso aviso--error" role="alert" th:if="${#fields.hasAnyErrors()}">
+                    Revisa los campos marcados.</p>
+
+                <div class="formulario__campos">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="empresa">Empresa o comercio</label>
+                        <input class="campo__control" type="text" th:field="*{empresa}" required maxlength="150"
+                               autocomplete="organization" th:errorclass="campo__control--error"
+                               th:attr="aria-describedby=${#fields.hasErrors('empresa')} ? 'empresa-error'">
+                        <p class="campo__error" id="empresa-error" th:if="${#fields.hasErrors('empresa')}" th:errors="*{empresa}">Error</p>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="contacto">Persona de contacto</label>
+                        <input class="campo__control" type="text" th:field="*{contacto}" required maxlength="100"
+                               autocomplete="name" th:errorclass="campo__control--error"
+                               th:attr="aria-describedby=${#fields.hasErrors('contacto')} ? 'contacto-error'">
+                        <p class="campo__error" id="contacto-error" th:if="${#fields.hasErrors('contacto')}" th:errors="*{contacto}">Error</p>
+                    </div>
+                    <div class="formulario__fila">
+                        <div class="campo">
+                            <label class="campo__etiqueta" for="email">Correo electrónico</label>
+                            <input class="campo__control" type="email" th:field="*{email}" required maxlength="254"
+                                   autocomplete="email" th:errorclass="campo__control--error"
+                                   th:attr="aria-describedby=${#fields.hasErrors('email')} ? 'email-error'">
+                            <p class="campo__error" id="email-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</p>
+                        </div>
+                        <div class="campo">
+                            <label class="campo__etiqueta" for="telefono">Teléfono (opcional)</label>
+                            <input class="campo__control" type="tel" th:field="*{telefono}" maxlength="30"
+                                   autocomplete="tel" th:errorclass="campo__control--error"
+                                   th:attr="aria-describedby=${#fields.hasErrors('telefono')} ? 'telefono-error'">
+                            <p class="campo__error" id="telefono-error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</p>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="mensaje">Mensaje (opcional)</label>
+                        <textarea class="campo__control campo__control--area" th:field="*{mensaje}" rows="4" maxlength="1000"
+                                  placeholder="Cuéntanos qué te interesa" th:errorclass="campo__control--error"></textarea>
+                        <p class="campo__error" th:if="${#fields.hasErrors('mensaje')}" th:errors="*{mensaje}">Error</p>
+                    </div>
+
+                    <!-- Campo trampa para bots: oculto a la vista y a los lectores de pantalla -->
+                    <div class="trampa" aria-hidden="true">
+                        <label for="sitio">No rellenes este campo</label>
+                        <input type="text" id="sitio" name="sitio" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <div class="casilla">
+                        <input type="checkbox" th:field="*{privacidad}" required>
+                        <label th:for="${#ids.prev('privacidad')}">He leído la <a th:href="@{/privacidad}">política de
+                            privacidad</a> y acepto que el club contacte conmigo.</label>
+                    </div>
+                    <p class="campo__error" th:if="${#fields.hasErrors('privacidad')}" th:errors="*{privacidad}">Error</p>
+
+                    <button class="boton boton--amarillo formulario__boton" type="submit">Enviar solicitud &rarr;</button>
+                    <p class="formulario__pie">Usamos tus datos solo para responder a esta solicitud.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

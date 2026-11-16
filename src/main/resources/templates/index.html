@@ -222,14 +222,32 @@
         <div class="contenedor">
             <h2 class="antetitulo antetitulo--gris" id="titulo-patrocinio">El equipo también se construye fuera del campo</h2>
             <div class="patrocinio__fila">
-                <ul class="patrocinio__huecos" aria-label="Espacios de patrocinio disponibles">
+                <!-- Patrocinadores visibles (panel > Patrocinio). Sin ninguno, se muestran los huecos del diseño. -->
+                <ul class="patrocinio__logos" aria-label="Patrocinadores del club"
+                    th:unless="${#lists.isEmpty(patrocinadores)}">
+                    <li class="patrocinio__logo" th:each="p : ${patrocinadores}"
+                        th:classappend="${p.principal()} ? 'patrocinio__logo--principal'">
+                        <a class="patrocinio__marca" th:if="${p.web != null}" th:href="${p.web}"
+                           rel="sponsored noopener" target="_blank">
+                            <img th:if="${p.logoUrl != null}" th:src="@{${p.logoUrl}}" th:alt="${p.nombre}" loading="lazy">
+                            <span class="titular" th:unless="${p.logoUrl != null}" th:text="${p.nombre}">Empresa</span>
+                            <span class="visualmente-oculto">(se abre en otra pestaña)</span>
+                        </a>
+                        <span class="patrocinio__marca" th:unless="${p.web != null}">
+                            <img th:if="${p.logoUrl != null}" th:src="@{${p.logoUrl}}" th:alt="${p.nombre}" loading="lazy">
+                            <span class="titular" th:unless="${p.logoUrl != null}" th:text="${p.nombre}">Empresa</span>
+                        </span>
+                    </li>
+                </ul>
+                <ul class="patrocinio__huecos" aria-label="Espacios de patrocinio disponibles"
+                    th:if="${#lists.isEmpty(patrocinadores)}">
                     <li class="titular patrocinio__hueco">Tu marca</li>
                     <li class="titular patrocinio__hueco">Comercio local</li>
                     <li class="titular patrocinio__hueco">Empresa colaboradora</li>
                 </ul>
-                <a class="patrocinio__enlace" href="#contacto">Patrocina al club &rarr;</a>
+                <a class="patrocinio__enlace" th:href="@{/patrocina}">Patrocina al club &rarr;</a>
             </div>
-            <p class="patrocinio__nota">Espacios de patrocinio · logos por incorporar</p>
+            <p class="patrocinio__nota" th:if="${#lists.isEmpty(patrocinadores)}">Espacios de patrocinio disponibles</p>
         </div>
     </section>
 </main>

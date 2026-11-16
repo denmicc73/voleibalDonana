@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Patrocinadores · Panel · Almonte Doñana', 'Patrocinadores del club.')}">
+    <title>Patrocinadores · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('patrocinio')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor">
+        <div class="panel__cabecera">
+            <div>
+                <h1 class="titular panel__titulo">Patrocinadores</h1>
+                <p class="panel__entradilla">Los visibles salen en la portada: primero los principales, después por
+                    orden. <a class="panel__volver" th:href="@{/admin/solicitudes-patrocinio}">Ver solicitudes recibidas &rarr;</a></p>
+            </div>
+            <a class="boton boton--amarillo" th:href="@{/admin/patrocinadores/nuevo}">Añadir patrocinador &rarr;</a>
+        </div>
+
+        <div th:replace="~{fragments/admin :: avisos}"></div>
+
+        <p class="panel__vacio" th:if="${#lists.isEmpty(patrocinadores)}">
+            Todavía no hay patrocinadores. Mientras tanto, la portada muestra los huecos "Tu marca".</p>
+
+        <div class="tabla-contenedor" th:unless="${#lists.isEmpty(patrocinadores)}">
+            <table class="tabla">
+                <caption class="visualmente-oculto">Patrocinadores</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Logo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Nivel</th>
+                    <th scope="col">Orden</th>
+                    <th scope="col">En la web</th>
+                    <th scope="col"><span class="visualmente-oculto">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${patrocinadores}">
+                    <td>
+                        <img class="miniatura-logo" th:if="${p.logoUrl != null}" th:src="@{${p.logoUrl}}" alt="">
+                        <span class="tabla__secundario" th:unless="${p.logoUrl != null}">Sin logo</span>
+                    </td>
+                    <td>
+                        <span th:text="${p.nombre}">Empresa</span>
+                        <span class="tabla__secundario" th:if="${p.web != null}" th:text="${p.web}">https://…</span>
+                    </td>
+                    <td th:text="${p.nivel.descripcion}">Principal</td>
+                    <td th:text="${p.orden}">0</td>
+                    <td>
+                        <span class="etiqueta etiqueta--ok" th:if="${p.visible}">Visible</span>
+                        <span class="etiqueta etiqueta--apagada" th:unless="${p.visible}">Oculto</span>
+                    </td>
+                    <td>
+                        <div class="tabla__botones">
+                            <a class="boton boton--contorno boton--pequeno"
+                               th:href="@{/admin/patrocinadores/{id}/editar(id=${p.id})}">Editar</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

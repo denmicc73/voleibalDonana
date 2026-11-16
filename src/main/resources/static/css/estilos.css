@@ -2034,3 +2034,167 @@ select.campo__control {
     text-align: center;
     font-variant-numeric: tabular-nums;
 }
+
+/* Patrocinadores en la portada (logos reales) */
+.patrocinio__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espacio-m) var(--espacio-l);
+    margin-top: var(--espacio-m);
+    padding: 0;
+    list-style: none;
+}
+
+.patrocinio__marca {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    color: var(--azul-marino);
+    text-decoration: none;
+    font-size: 1.3rem;
+}
+
+.patrocinio__marca img {
+    width: auto;
+    max-width: 160px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.patrocinio__logo--principal .patrocinio__marca {
+    font-size: 1.8rem;
+}
+
+.patrocinio__logo--principal .patrocinio__marca img {
+    max-width: 220px;
+    height: 72px;
+}
+
+a.patrocinio__marca:hover img {
+    opacity: 0.8;
+}
+
+@media (min-width: 1024px) {
+    .patrocinio__logos {
+        flex: 1;
+        margin-top: 0;
+    }
+}
+
+/* Página "Patrocina al club" */
+.patrocina__rejilla {
+    display: grid;
+    gap: var(--espacio-l);
+}
+
+.patrocina__entradilla {
+    margin-top: var(--espacio-s);
+    color: var(--texto-gris);
+}
+
+.patrocina__ventajas {
+    display: grid;
+    gap: 10px;
+    margin-top: var(--espacio-m);
+    padding-left: 20px;
+}
+
+.patrocina__rotulo {
+    margin-top: var(--espacio-m);
+    font-size: 1.3rem;
+    color: var(--azul-marino);
+}
+
+@media (min-width: 1024px) {
+    .patrocina__rejilla {
+        grid-template-columns: 1fr 1fr;
+        gap: 70px;
+        align-items: start;
+    }
+}
+
+.campo__control--area {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* Campo trampa para bots: fuera de la vista sin display:none (algunos bots lo detectan) */
+.trampa {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Panel: logos y solicitudes */
+.miniatura-logo {
+    width: auto;
+    max-width: 120px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-actual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.solicitudes {
+    display: grid;
+    gap: var(--espacio-s);
+    margin-top: var(--espacio-m);
+    padding: 0;
+    list-style: none;
+}
+
+.solicitud {
+    padding: 20px;
+    border-left: 5px solid var(--amarillo);
+    border-radius: var(--radio);
+    background: var(--blanco);
+}
+
+.solicitud--atendida {
+    border-left-color: var(--campo-borde);
+}
+
+.solicitud__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.solicitud__empresa {
+    font-size: 1.5rem;
+}
+
+.solicitud__datos {
+    margin-top: 6px;
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+}
+
+.solicitud__datos a {
+    color: var(--azul-marino);
+    font-weight: 600;
+}
+
+.solicitud__mensaje {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--fondo-claro);
+    border-radius: var(--radio-boton);
+    font-size: 0.875rem;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.solicitud__botones {
+    justify-content: flex-start;
+    margin-top: 12px;
+}

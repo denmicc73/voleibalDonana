@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Solicitud enviada · Almonte Doñana',
+        'Hemos recibido tu solicitud de patrocinio para el club de voleibol Almonte Doñana.')}">
+    <title>Solicitud enviada · Almonte Doñana</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: cabecera('patrocinio')}"></div>
+
+<main id="contenido" class="error">
+    <div class="contenedor">
+        <p class="titular error__codigo" aria-hidden="true">¡Gracias!</p>
+        <h1 class="titular error__titulo">Solicitud recibida</h1>
+        <p class="error__texto">El club se pondrá en contacto contigo en los próximos días para contarte las
+            opciones de patrocinio.</p>
+        <a class="boton boton--amarillo error__boton" th:href="@{/}">Volver al inicio &rarr;</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

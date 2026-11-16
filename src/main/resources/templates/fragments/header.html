@@ -31,7 +31,8 @@
                     <li><a class="menu__enlace" th:href="@{/#equipos}">Equipos</a></li>
                     <li><a class="menu__enlace" th:href="@{/#calendario}">Calendario</a></li>
                     <li><a class="menu__enlace" th:href="@{/#inscripcion}">Inscripción</a></li>
-                    <li><a class="menu__enlace" th:href="@{/#patrocinio}">Patrocinio</a></li>
+                    <li><a class="menu__enlace" th:href="@{/#patrocinio}"
+                           th:attr="aria-current=${activo == 'patrocinio'} ? 'page'">Patrocinio</a></li>
                 </ul>
                 <a class="boton boton--amarillo menu__accion" th:href="@{/#inscripcion}">Únete al equipo &rarr;</a>
             </nav>

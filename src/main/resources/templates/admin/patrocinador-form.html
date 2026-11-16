@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Patrocinador · Panel · Almonte Doñana', 'Datos de un patrocinador.')}">
+    <title>Patrocinador · Panel · Almonte Doñana</title>
+</head>
+<body class="cuerpo-panel">
+<div th:replace="~{fragments/admin :: cabecera('patrocinio')}"></div>
+
+<main id="contenido" class="panel">
+    <div class="contenedor panel__estrecho">
+        <p><a class="panel__volver" th:href="@{/admin/patrocinadores}">&larr; Patrocinadores</a></p>
+        <h1 class="titular panel__titulo" th:text="${patrocinador == null} ? 'Añadir patrocinador' : 'Editar patrocinador'">Añadir patrocinador</h1>
+
+        <form class="panel-formulario" method="post" enctype="multipart/form-data" novalidate th:object="${form}"
+              th:action="${patrocinador == null} ? @{/admin/patrocinadores} : @{/admin/patrocinadores/{id}(id=${patrocinador.id})}">
+            <p class="aviso aviso--error" role="alert" th:if="${#fields.hasGlobalErrors()}"
+               th:each="e : ${#fields.globalErrors()}" th:text="${e}">Error del logo</p>
+            <div class="formulario__campos">
+                <div class="campo">
+                    <label class="campo__etiqueta" for="nombre">Nombre</label>
+                    <input class="campo__control" type="text" th:field="*{nombre}" required maxlength="100"
+                           th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</p>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="web">Web (opcional)</label>
+                    <input class="campo__control" type="url" th:field="*{web}" maxlength="255"
+                           placeholder="https://www.ejemplo.es" th:errorclass="campo__control--error">
+                    <p class="campo__error" th:if="${#fields.hasErrors('web')}" th:errors="*{web}">Error</p>
+                </div>
+                <div class="formulario__fila">
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="nivel">Nivel</label>
+                        <select class="campo__control" th:field="*{nivel}">
+                            <option th:each="n : ${niveles}" th:value="${n}" th:text="${n.descripcion}">Principal</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label class="campo__etiqueta" for="orden">Orden</label>
+                        <input class="campo__control" type="number" min="0" max="99" th:field="*{orden}"
+                               th:errorclass="campo__control--error">
+                        <p class="campo__error" th:if="${#fields.hasErrors('orden')}" th:errors="*{orden}">Error</p>
+                    </div>
+                </div>
+                <div class="campo">
+                    <label class="campo__etiqueta" for="logo">Logo (PNG, JPG o WebP, máximo 1 MB)</label>
+                    <div class="logo-actual" th:if="${patrocinador != null and patrocinador.logoUrl != null}">
+                        <img class="miniatura-logo" th:src="@{${patrocinador.logoUrl}}" alt="Logo actual">
+                        <span class="campo__ayuda">Sube otro para cambiarlo.</span>
+                    </div>
+                    <input class="campo__control" type="file" id="logo" name="logo"
+                           accept="image/png,image/jpeg,image/webp">
+                    <p class="campo__ayuda">Mejor con fondo transparente y en horizontal.</p>
+                </div>
+                <div class="casilla" th:if="${patrocinador != null and patrocinador.logoUrl != null}">
+                    <input type="checkbox" th:field="*{quitarLogo}">
+                    <label th:for="${#ids.prev('quitarLogo')}">Quitar el logo actual (se mostrará el nombre)</label>
+                </div>
+                <div class="casilla">
+                    <input type="checkbox" th:field="*{visible}">
+                    <label th:for="${#ids.prev('visible')}">Mostrar en la web</label>
+                </div>
+                <button class="boton boton--amarillo formulario__boton" type="submit">Guardar patrocinador</button>
+            </div>
+        </form>
+
+        <form class="panel__accion-secundaria" th:if="${patrocinador != null}" method="post"
+              th:action="@{/admin/patrocinadores/{id}/borrar(id=${patrocinador.id})}">
+            <button class="boton boton--peligro boton--pequeno" type="submit">Borrar patrocinador</button>
+            <span class="campo__ayuda">Si solo quieres que deje de salir, desmarca "Mostrar en la web".</span>
+        </form>
+    </div>
+</main>
+</body>
+</html>
