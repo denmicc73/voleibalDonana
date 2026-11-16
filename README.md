@@ -28,6 +28,7 @@ Entrada en `/admin/login` (no aparece en el menú de la web). El usuario es el e
 - **Contraseñas**: de 12 a 72 caracteres, guardadas con BCrypt.
 - **Intentos fallidos**: 5 seguidos bloquean la cuenta 15 minutos (`club.acceso.max-intentos` y `club.acceso.bloqueo`). Un ADMIN puede desbloquearla desde *Usuarios*.
 - Al desactivar una cuenta se cierran sus sesiones abiertas.
+- **Contraseña olvidada**: no hay recuperación por email. Un ADMIN pone una temporal con *Restablecer contraseña* en *Usuarios* y la persona la cambia en *Mi cuenta*.
 
 ## Tests y verificación
 ```

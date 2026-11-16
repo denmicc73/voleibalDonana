@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.voleibaldonana.dto.NuevoUsuarioForm;
+import es.voleibaldonana.dto.RestablecerPasswordForm;
 import es.voleibaldonana.exception.EmailEnUsoException;
 import es.voleibaldonana.exception.OperacionNoPermitidaException;
 import es.voleibaldonana.model.Rol;
@@ -26,6 +27,7 @@ public class UsuariosController {
 
     private static final String VISTA_LISTA = "admin/usuarios";
     private static final String VISTA_NUEVO = "admin/usuario-nuevo";
+    private static final String VISTA_PASSWORD = "admin/usuario-password";
     private static final String REDIRECT_LISTA = "redirect:/admin/usuarios";
 
     private final UsuarioService usuarioService;
@@ -86,6 +88,31 @@ public class UsuariosController {
             redirect.addFlashAttribute("error", e.getMessage());
         }
         return REDIRECT_LISTA;
+    }
+
+    @GetMapping("/{id}/password")
+    public String formularioPassword(@PathVariable Long id, Model model) {
+        model.addAttribute("usuario", usuarioService.resumen(id));
+        model.addAttribute("form", new RestablecerPasswordForm());
+        return VISTA_PASSWORD;
+    }
+
+    @PostMapping("/{id}/password")
+    public String restablecerPassword(@PathVariable Long id,
+            @Valid @ModelAttribute("form") RestablecerPasswordForm form, BindingResult resultado,
+            Principal principal, Model model, RedirectAttributes redirect) {
+        if (!resultado.hasErrors()) {
+            try {
+                usuarioService.restablecerPassword(id, form.getPassword(), principal.getName());
+                redirect.addFlashAttribute("aviso",
+                        "Contraseña restablecida. Comunícala en persona y pide que la cambie en \"Mi cuenta\".");
+                return REDIRECT_LISTA;
+            } catch (OperacionNoPermitidaException e) {
+                resultado.rejectValue("password", "invalida", e.getMessage());
+            }
+        }
+        model.addAttribute("usuario", usuarioService.resumen(id));
+        return VISTA_PASSWORD;
     }
 
     @PostMapping("/{id}/desbloquear")

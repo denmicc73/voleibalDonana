@@ -97,6 +97,31 @@ public class UsuarioService {
         }
     }
 
+    /**
+     * Un ADMIN pone una contraseña temporal a otra persona (no hay recuperación por email).
+     * La cuenta queda desbloqueada y se cierran sus sesiones abiertas.
+     * La contraseña propia se cambia en "Mi cuenta", donde se pide la actual.
+     */
+    public void restablecerPassword(Long id, String nueva, String emailQuienLoHace) {
+        Usuario usuario = usuarios.findById(id).orElseThrow(UsuarioNoEncontradoException::new);
+        if (usuario.getEmail().equals(normalizarEmail(emailQuienLoHace))) {
+            throw new OperacionNoPermitidaException("Tu propia contraseña se cambia en \"Mi cuenta\".");
+        }
+        if (!PoliticaPassword.valida(nueva)) {
+            throw new OperacionNoPermitidaException(PoliticaPassword.MENSAJE);
+        }
+        usuario.setPasswordHash(passwordEncoder.encode(nueva));
+        usuario.desbloquear();
+        sesiones.cerrarSesiones(usuario.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResumen resumen(Long id) {
+        Usuario u = usuarios.findById(id).orElseThrow(UsuarioNoEncontradoException::new);
+        return new UsuarioResumen(u.getId(), u.getNombre(), u.getEmail(), u.getRol(), u.isActivo(),
+                u.estaBloqueado(LocalDateTime.now(clock)), u.getUltimoAcceso());
+    }
+
     public void desbloquear(Long id) {
         usuarios.findById(id).orElseThrow(UsuarioNoEncontradoException::new).desbloquear();
     }

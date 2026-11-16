@@ -145,6 +145,59 @@ class GestionUsuariosTests {
     }
 
     @Test
+    void adminRestableceLaPasswordDeOtro() throws Exception {
+        Long id = usuarioService.crear("Eva Editora", "eva@test.es", PASSWORD, Rol.EDITOR);
+
+        mockMvc.perform(get("/admin/usuarios/{id}/password", id).with(comoAdmin()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("eva@test.es")));
+
+        mockMvc.perform(post("/admin/usuarios/{id}/password", id).with(csrf()).with(comoAdmin())
+                        .param("password", "temporal bastante larga"))
+                .andExpect(redirectedUrl("/admin/usuarios"))
+                .andExpect(flash().attributeExists("aviso"));
+
+        String hash = usuarios.findById(id).orElseThrow().getPasswordHash();
+        assertThat(passwordEncoder.matches("temporal bastante larga", hash)).isTrue();
+    }
+
+    @Test
+    void restablecerPasswordCortaMuestraError() throws Exception {
+        Long id = usuarioService.crear("Eva Editora", "eva@test.es", PASSWORD, Rol.EDITOR);
+
+        mockMvc.perform(post("/admin/usuarios/{id}/password", id).with(csrf()).with(comoAdmin())
+                        .param("password", "corta"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("entre 12 y 72 caracteres")));
+
+        String hash = usuarios.findById(id).orElseThrow().getPasswordHash();
+        assertThat(passwordEncoder.matches(PASSWORD, hash)).isTrue();
+    }
+
+    @Test
+    void laPasswordPropiaNoSeRestableceDesdeUsuarios() throws Exception {
+        Long id = usuarios.findByEmail(ADMIN).orElseThrow().getId();
+
+        mockMvc.perform(post("/admin/usuarios/{id}/password", id).with(csrf()).with(comoAdmin())
+                        .param("password", "temporal bastante larga"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Mi cuenta")));
+
+        String hash = usuarios.findById(id).orElseThrow().getPasswordHash();
+        assertThat(passwordEncoder.matches(PASSWORD, hash)).isTrue();
+    }
+
+    @Test
+    void editorNoPuedeRestablecerPasswords() throws Exception {
+        Long id = usuarios.findByEmail(ADMIN).orElseThrow().getId();
+
+        mockMvc.perform(post("/admin/usuarios/{id}/password", id).with(csrf())
+                        .with(user("editor@test.es").roles("EDITOR"))
+                        .param("password", "temporal bastante larga"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void cambioDePasswordCorrecto() throws Exception {
         mockMvc.perform(post("/admin/cuenta").with(csrf()).with(comoAdmin())
                         .param("actual", PASSWORD)

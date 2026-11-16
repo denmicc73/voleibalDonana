@@ -47,6 +47,8 @@
                     </td>
                     <td>
                         <div class="tabla__botones">
+                        <a class="boton boton--contorno boton--pequeno" th:if="${u.email != usuarioActual?.email}"
+                           th:href="@{/admin/usuarios/{id}/password(id=${u.id})}">Restablecer contraseña</a>
                         <form th:if="${u.bloqueado}" th:action="@{/admin/usuarios/{id}/desbloquear(id=${u.id})}" method="post">
                             <button class="boton boton--contorno boton--pequeno" type="submit">Desbloquear</button>
                         </form>
